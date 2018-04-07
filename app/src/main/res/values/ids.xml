@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="radioGroup" type="id"/>
+    <item name="checkLinearLayout" type="id" />
+    <item name="dateTextView" type="id" />
+    <item name="addressTextView" type="id" />
+    <item name="editText" type="id" />
+</resources>

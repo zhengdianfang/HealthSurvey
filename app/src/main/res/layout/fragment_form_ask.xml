@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/tool_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/mid_rect_shape"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/midiv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/mid_top_bg"
+            android:background="@drawable/view_rect_shape"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/midiv"
+            android:text="@string/personal_ask_use_label1"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="18sp"
+            android:textColor="@color/titlecolor"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+        <LinearLayout
+            android:id="@+id/lly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/title">
+            <TextView
+                android:id="@+id/yestv"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="@string/yes"
+                android:textSize="18sp"
+                android:textColor="@color/titlecolor"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/rect_button_shap1"/>
+            <TextView
+                android:id="@+id/notv"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="@string/no"
+                android:textSize="18sp"
+                android:textColor="@color/titlecolor"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="60dp"
+                android:background="@drawable/rect_button_shap1"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

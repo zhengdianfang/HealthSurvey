@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zhengdianfang.healthsurvey.views.NoUseFragment">
+
+    <include layout="@layout/tool_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_item_shap"
+        android:layout_margin="16dp"
+        android:padding="1dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noUseTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:padding="8dp"
+            android:text="请选择停止该保健品的理由"
+            android:background="@drawable/top_corner_background"/>
+
+        <RadioGroup
+            android:id="@+id/noUseRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+           <RadioButton
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="出现不良反应"
+               android:layout_marginHorizontal="8dp"
+               android:textColor="@android:color/darker_gray"
+               android:padding="16dp"/>
+
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="对产品不满意"
+                android:layout_marginHorizontal="8dp"
+                android:textColor="@android:color/darker_gray"
+                android:padding="16dp"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="特殊情况（妊娠期、哺乳期等）"
+                android:layout_marginHorizontal="8dp"
+                android:textColor="@android:color/darker_gray"
+                android:padding="16dp"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="其他"
+                android:layout_marginHorizontal="8dp"
+                android:textColor="@android:color/darker_gray"
+                android:background="@drawable/bottom_corner_background"
+                android:padding="16dp"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confrimBtn"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/confrim"
+        android:layout_gravity="center"
+        android:background="@drawable/next_btn"/>
+</LinearLayout>

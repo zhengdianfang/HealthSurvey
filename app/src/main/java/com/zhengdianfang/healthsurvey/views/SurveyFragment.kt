@@ -3,17 +3,15 @@ package com.zhengdianfang.healthsurvey.views
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
-
+import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Condition
@@ -21,14 +19,11 @@ import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.entities.QuestionTable
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
-import com.zhengdianfang.healthsurvey.views.adapter.MultipleItem
-import com.zhengdianfang.healthsurvey.views.adapter.QuestionAdapter
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
-import kotlinx.android.synthetic.main.fragment_form_part_one.*
 import kotlinx.android.synthetic.main.fragment_survey.*
 import kotlinx.android.synthetic.main.tool_bar.*
-import me.yokeyword.fragmentation.SupportFragment
+import me.yokeyword.fragmentation.SupportHelper
 
 
 /**
@@ -61,6 +56,7 @@ open class SurveyFragment : FormPartOneFragment() {
         }
 
         view?.findViewById<Button>(R.id.saveButton)?.setOnClickListener {
+            SupportHelper.hideSoftInput(it)
             if (null != this.form) {
                 run breadking@ {
                     components.forEach {
@@ -73,9 +69,11 @@ open class SurveyFragment : FormPartOneFragment() {
                     }
 
                 }
+                (context?.applicationContext as AppApplication).surveyStatusCache[this.form?.id!!] = true
                 formViewModel.submitSurveyForm(this.form!!, this.uniqueid, this.org_number).observe(this, Observer {
                     if (it != false) {
                         pop()
+                        Toast.makeText(context, R.string.save_success, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, R.string.save_fail, Toast.LENGTH_SHORT).show()
                     }

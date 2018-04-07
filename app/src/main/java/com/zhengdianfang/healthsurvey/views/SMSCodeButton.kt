@@ -2,24 +2,24 @@ package com.zhengdianfang.healthsurvey.views
 
 import android.content.Context
 import android.graphics.Color
+import android.os.CountDownTimer
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.zhengdianfang.healthsurvey.BuildConfig
 import com.zhengdianfang.healthsurvey.Des4
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Response
+import com.zhengdianfang.healthsurvey.entities.SmsCode
 import com.zhengdianfang.healthsurvey.repository.AppRepository
+import org.jetbrains.anko.runOnUiThread
 import retrofit2.Call
 import retrofit2.Callback
-import android.os.CountDownTimer
-import android.util.AttributeSet
-import com.zhengdianfang.healthsurvey.entities.SmsCode
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.runOnUiThread
 
 
 /**
@@ -86,6 +86,9 @@ class SMSCodeButton(context: Context?, attrs: AttributeSet?) : Button(context, a
                 override fun onResponse(call: Call<Response<SmsCode>>?, response: retrofit2.Response<Response<SmsCode>>?) {
                     nowSmsCode = response?.body()?.data?.code ?: ""
 
+                    if (BuildConfig.DEBUG) {
+                        Log.d("SMSCodeButton", Des4.decode(nowSmsCode))
+                    }
                     if (response?.body()?.status == WebService.HTTP_OK) {
                         Toast.makeText(context, R.string.get_sms_code_success, Toast.LENGTH_SHORT).show()
                     } else {

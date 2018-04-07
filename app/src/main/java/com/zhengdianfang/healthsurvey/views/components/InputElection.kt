@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.entities.Answer
 import com.zhengdianfang.healthsurvey.entities.Condition
 import com.zhengdianfang.healthsurvey.entities.Question
 
@@ -39,9 +38,6 @@ open class InputElection(context: Context, question: Question) : BaseComponent(c
         editText = view.findViewById(R.id.editText)
         editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (question.answers == null) {
-                    question.answers = Answer("", "", "", "")
-                }
                 if (type == FRONT_OPTIONS) {
                     question.answers?.answer = p0?.toString() ?: ""
                 } else {

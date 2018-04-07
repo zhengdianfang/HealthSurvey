@@ -4,7 +4,6 @@ package com.zhengdianfang.healthsurvey.views
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,13 +14,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
-
+import android.widget.RadioButton
 import com.zhengdianfang.healthsurvey.R
+import com.zhengdianfang.healthsurvey.entities.Part
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import kotlinx.android.synthetic.main.fragment_no_use.*
 import kotlinx.android.synthetic.main.tool_bar.*
+import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
-import me.yokeyword.fragmentation.SupportHelper
 
 
 /**
@@ -50,10 +50,11 @@ class NoUseFragment : SupportFragment() {
                       val content = editText.text.toString()
                     if (TextUtils.isEmpty(content).not()) {
                         formViewModel.trachDirection(uniqueid, org_number, "2.4 其他-->$content").observe(this, Observer {
-                            popTo(GroupListFragment::class.java, false)
+                            start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
                         })
                     }
                 })
+                .setTitle(getString(R.string.please_input_other_reason))
                 .setView(editText)
                 .create()
     }
@@ -68,10 +69,10 @@ class NoUseFragment : SupportFragment() {
         super.onActivityCreated(savedInstanceState)
         titleTextView.setText(R.string.nouse_title)
 
-        noUseRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            index = i
-            if (i == 4) {
-               alertDialog.show()
+        noUseRadioGroup.setOnCheckedChangeListener { groupView, checkId ->
+            this.index = groupView.indexOfChild(groupView.findViewById<RadioButton>(checkId))
+            if (this.index == 3) {
+                alertDialog.show()
             }
         }
 
@@ -81,11 +82,14 @@ class NoUseFragment : SupportFragment() {
 
         confrimBtn.setOnClickListener {
             when(index) {
-                1-> {}
-                2 -> {}
-                3 -> {
+                0-> {
+                    arguments?.putInt("partType", Part.NOUSE)
+                    start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
+                }
+                1 -> {}
+                2 -> {
                     formViewModel.surveyFinish(uniqueid, org_number)
-                    popTo(GroupListFragment::class.java, false)
+                    start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
                 }
             }
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.zhengdianfang.healthsurvey.AppApplication
 
 import com.zhengdianfang.healthsurvey.R
 import kotlinx.android.synthetic.main.fragment_personal.*
@@ -41,5 +42,10 @@ class FormStartFragment : SupportFragment() {
             val fragment = instantiate(context, FormPartOneFragment::class.java.name, arguments) as ISupportFragment
             start(fragment)
         }
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        (context?.applicationContext as AppApplication).surveyStatusCache.clear()
     }
 }// Required empty public constructor

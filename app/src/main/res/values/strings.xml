@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HealthSurvey</string>
+    <string name="app_name">保健食品问卷</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -40,4 +40,14 @@
     <string name="eat_end">食用后</string>
     <string name="save_fail">保存失败</string>
     <string name="nouse_title">停用原因</string>
+    <string name="goon_reply">继续回答</string>
+    <string name="finish">结束</string>
+    <string name="goon_dailog_content">是否继续回答其他保健品</string>
+    <string name="fill">已填写</string>
+    <string name="please_input_other_reason">请输入其他理由</string>
+    <string name="back_home">返回首页</string>
+    <string name="thanks">感谢您对本次问卷的参与和帮助！</string>
+    <string name="survey_finish_title">问卷全部作答完毕</string>
+    <string name="save_success">保存成功</string>
+    <string name="cancel">取消</string>
 </resources>

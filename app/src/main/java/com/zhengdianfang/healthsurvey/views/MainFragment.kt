@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.entities.Product
 import com.zhengdianfang.healthsurvey.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import me.yokeyword.fragmentation.ISupportFragment
@@ -44,7 +42,7 @@ class MainFragment : SupportFragment() {
 
     private fun bindEvent() {
         personalTextView.setOnClickListener {
-            val fragment = instantiate(context, GroupListFragment::class.java.name) as ISupportFragment
+            val fragment = instantiate(context, FormStartFragment::class.java.name) as ISupportFragment
             start(fragment)
         }
 

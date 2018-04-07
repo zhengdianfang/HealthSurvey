@@ -1,17 +1,18 @@
 package com.zhengdianfang.healthsurvey
 
 import android.app.Application
-import android.net.http.HttpResponseCache.install
 import io.realm.Realm
-import me.yokeyword.fragmentation.Fragmentation
 import io.realm.RealmConfiguration
-
+import me.yokeyword.fragmentation.Fragmentation
 
 
 /**
  * Created by dfgzheng on 05/04/2018.
  */
 class AppApplication: Application() {
+
+    val surveyStatusCache = mutableMapOf<String, Boolean>()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -24,5 +25,10 @@ class AppApplication: Application() {
         Realm.init(this)
         val config = RealmConfiguration.Builder().name("survey.realm").build()
         Realm.setDefaultConfiguration(config)
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        surveyStatusCache.clear()
     }
 }

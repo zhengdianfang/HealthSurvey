@@ -1,14 +1,14 @@
 package com.zhengdianfang.healthsurvey.views.components
 
 import android.content.Context
+import android.graphics.Color
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import com.zhengdianfang.healthsurvey.MainActivity
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.entities.Answer
 import com.zhengdianfang.healthsurvey.entities.Product
 import com.zhengdianfang.healthsurvey.entities.Question
 
@@ -39,9 +39,6 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
             editText?.setAdapter(ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,  context.products.map { it.name }))
             editText?.setOnItemClickListener { _, _, _, _ ->
                 val input = editText?.text.toString()
-                if (question.answers == null) {
-                    question.answers = Answer("", "", "", "")
-                }
                 question.answers?.answer = input
                 val product = context.products.first{ it.name == input }
                 if (product != null) {
@@ -57,6 +54,7 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
 
     override fun renderOptions(type: Int): View {
         val editText = AutoCompleteTextView(this.context)
+        editText.setTextColor(Color.BLACK)
         editText.id = R.id.editText
         editText.setBackgroundResource(R.drawable.default_input)
         return editText

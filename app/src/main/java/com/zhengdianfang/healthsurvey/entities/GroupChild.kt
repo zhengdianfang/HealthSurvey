@@ -5,7 +5,13 @@ package com.zhengdianfang.healthsurvey.entities
  */
 data class PartGroup(var base: Part, var inuse: Part, var nouse: Part)
 
-data class Part(var title: String, var list: MutableList<Group>)
+data class Part(var title: String, var list: MutableList<Group>) {
+    companion object {
+        const val BASE = 0
+        const val INUSE = 1
+        const val NOUSE = 2
+    }
+}
 
 data class Group(var list_title: String, var group: MutableList<GroupChild>)
 

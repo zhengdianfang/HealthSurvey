@@ -1,13 +1,12 @@
 package com.zhengdianfang.healthsurvey.repository
 
 import android.arch.lifecycle.LiveData
-import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
-import retrofit2.Call
-import retrofit2.Callback
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
-import com.google.gson.Gson
+import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.*
+import retrofit2.Call
+import retrofit2.Callback
 
 
 /**
@@ -179,17 +178,15 @@ class AppRepository {
         WebService.retrofit
                 .create(WebService.Api::class.java)
                 .submitSurveyForm(WebService.gson.toJson(Request(Header("", uniqueid, org_number), form)))
-                .enqueue(object : Callback<Response<Boolean>> {
-                    override fun onFailure(call: Call<Response<Boolean>>?, t: Throwable?) {
+                .enqueue(object : Callback<Response<Any>> {
+                    override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
                         t?.printStackTrace()
                     }
 
-                    override fun onResponse(call: Call<Response<Boolean>>?, response: retrofit2.Response<Response<Boolean>>?) {
+                    override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
                         Log.d("AppRepository", response?.message())
                         val body = response?.body()
-                        if (body?.status == WebService.HTTP_OK) {
-                            data.value = body?.data
-                        }
+                        data.value = body?.status == WebService.HTTP_OK
                     }
 
                 })

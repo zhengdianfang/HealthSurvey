@@ -1,9 +1,7 @@
 package com.zhengdianfang.healthsurvey.datasource.cloud
 
-import android.util.Log
 import com.google.gson.GsonBuilder
 import com.zhengdianfang.healthsurvey.entities.*
-import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -78,7 +76,7 @@ class WebService {
 
         @FormUrlEncoded
         @POST("api/group_submit")
-        fun submitSurveyForm(@Field("data") request: String): Call<Response<Boolean>>
+        fun submitSurveyForm(@Field("data") request: String): Call<Response<Any>>
 
 
         @FormUrlEncoded

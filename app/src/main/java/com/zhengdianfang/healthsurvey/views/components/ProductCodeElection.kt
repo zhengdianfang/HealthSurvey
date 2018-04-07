@@ -4,13 +4,10 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
-import com.zhengdianfang.healthsurvey.MainActivity
+import android.widget.EditText
+import android.widget.Toast
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.entities.Answer
-import com.zhengdianfang.healthsurvey.entities.Product
 import com.zhengdianfang.healthsurvey.entities.Question
 
 /**
@@ -37,9 +34,6 @@ class ProductCodeElection(context: Context, question: Question) : BaseComponent(
         editText = view.findViewById(R.id.editText)
         editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (question.answers == null) {
-                    question.answers = Answer("", "", "", "")
-                }
                 question.answers?.answer = p0?.toString() ?: ""
             }
 

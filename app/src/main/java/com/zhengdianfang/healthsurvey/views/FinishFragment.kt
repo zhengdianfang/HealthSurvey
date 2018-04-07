@@ -8,36 +8,33 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.entities.Part
-import kotlinx.android.synthetic.main.fragment_form_ask.*
+import kotlinx.android.synthetic.main.fragment_finish.*
 import kotlinx.android.synthetic.main.tool_bar.*
-import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class FormAskFragment : SupportFragment() {
+class FinishFragment : SupportFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_form_ask, container, false)
+        return inflater.inflate(R.layout.fragment_finish, container, false)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        titleTextView.setText(R.string.question_title)
 
-        notv.setOnClickListener {
-            start(SupportFragment.instantiate(context, NoUseFragment::class.java.name) as ISupportFragment)
+        goHomeButton.setOnClickListener {
+            popTo(FormStartFragment::class.java, false)
         }
-        yestv.setOnClickListener {
-            arguments?.putInt("partType", Part.INUSE)
-            start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
+
+        titleTextView.setText(R.string.question_title)
+        back.setOnClickListener {
+            popTo(FormStartFragment::class.java, false)
         }
     }
 

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by dfgzheng on 05/04/2018.
  */
-data class Question (
+class Question (
         var qid: String,
         var title: String,
         var type: String,
@@ -13,9 +13,8 @@ data class Question (
         var pic: String,
         var isComparisonBeforeEat: String,
         var options: MutableList<Option>?,
-        @SerializedName("ext")
-        var condition: Condition?,
-        var answers: Answer?
+        @SerializedName("ext") var condition: Condition?,
+        @SerializedName("answers") var answers: Answer
 ) {
 
     fun parseType(): Int{

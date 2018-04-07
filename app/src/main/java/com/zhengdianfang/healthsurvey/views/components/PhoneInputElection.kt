@@ -1,20 +1,17 @@
 package com.zhengdianfang.healthsurvey.views.components
 
 import android.content.Context
-import android.graphics.PixelFormat
-import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import android.widget.RadioGroup.*
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
-import com.zhengdianfang.healthsurvey.entities.Answer
-import com.zhengdianfang.healthsurvey.entities.Condition
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.views.SMSCodeButton
 
@@ -85,9 +82,6 @@ class PhoneInputElection(context: Context, question: Question) : InputElection(c
         editText = view.findViewById(R.id.editText)
         editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (question.answers == null) {
-                    question.answers = Answer("", "", "", "")
-                }
                 question.answers?.answer = p0?.toString() ?: ""
             }
 

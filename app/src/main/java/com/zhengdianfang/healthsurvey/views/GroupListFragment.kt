@@ -27,7 +27,7 @@ import me.yokeyword.fragmentation.SupportFragment
 /**
  * A simple [Fragment] subclass.
  */
-class GroupListFragment : SupportFragment() {
+class GroupListFragment : BaseFragment() {
 
     private val groupListViewModel by lazy { ViewModelProviders.of(this).get(GroupListViewModel::class.java) }
     private val formViewModel by lazy { ViewModelProviders.of(this).get(FormViewModel::class.java) }
@@ -115,7 +115,9 @@ class GroupListFragment : SupportFragment() {
     }
 
     private fun initDatas() {
+        showDialog()
         groupListViewModel.getQuestionGroupList(this.uniqueid, this.org_number).observe(this, Observer {
+            hideDialog()
             when(partType) {
                 Part.BASE -> part = it?.base
                 Part.INUSE -> part = it?.inuse

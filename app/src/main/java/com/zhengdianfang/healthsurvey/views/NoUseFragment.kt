@@ -26,7 +26,7 @@ import me.yokeyword.fragmentation.SupportFragment
 /**
  * A simple [Fragment] subclass.
  */
-class NoUseFragment : SupportFragment() {
+class NoUseFragment : BaseFragment() {
 
     private val formViewModel by lazy { ViewModelProviders.of(this).get(FormViewModel::class.java) }
     private var index = -1
@@ -47,7 +47,9 @@ class NoUseFragment : SupportFragment() {
                 .setPositiveButton(R.string.confrim, { _, _ ->
                       val content = editText.text.toString()
                     if (TextUtils.isEmpty(content).not()) {
+                        showDialog()
                         formViewModel.trachDirection(uniqueid, org_number, "2.4 其他-->$content").observe(this, Observer {
+                            hideDialog()
                             start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
                         })
                     }

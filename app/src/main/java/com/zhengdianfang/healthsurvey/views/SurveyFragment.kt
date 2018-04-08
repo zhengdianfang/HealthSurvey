@@ -53,7 +53,9 @@ open class SurveyFragment : FormPartOneFragment() {
             if (null != this.form && verifyAnswers()) {
                 (context?.applicationContext as AppApplication).surveyStatusCache[this.form?.id!!] = true
                 this.form?.attachment_files = attachments.toTypedArray()
+                showDialog()
                 formViewModel.submitSurveyForm(this.form!!, this.uniqueid, this.org_number).observe(this, Observer {
+                    hideDialog()
                     if (it != false) {
                         pop()
                         Toast.makeText(context, R.string.save_success, Toast.LENGTH_SHORT).show()

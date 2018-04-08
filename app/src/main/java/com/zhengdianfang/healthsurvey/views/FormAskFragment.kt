@@ -18,7 +18,7 @@ import me.yokeyword.fragmentation.SupportFragment
 /**
  * A simple [Fragment] subclass.
  */
-class FormAskFragment : SupportFragment() {
+class FormAskFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

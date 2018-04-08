@@ -86,6 +86,7 @@ class WebService {
         @POST("api/track_direction")
         fun trachDirection(@Field("data") request: String): Call<Response<Any>>
 
-
+        @GET("api/get_version")
+        fun upgradleApp(): Call<Response<Version>>
     }
 }

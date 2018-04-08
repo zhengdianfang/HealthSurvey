@@ -11,13 +11,12 @@ import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import me.yokeyword.fragmentation.ISupportFragment
-import me.yokeyword.fragmentation.SupportFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class MainFragment : SupportFragment() {
+class MainFragment : BaseFragment() {
 
 
 

@@ -10,19 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import kotlinx.android.synthetic.main.fragment_mechanism.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
-import me.yokeyword.fragmentation.SupportFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class MechanismPartOneFragment : SupportFragment() {
+class MechanismPartOneFragment : BaseFragment() {
 
     private val formPartOneViewModel by lazy { ViewModelProviders.of(this).get(FormViewModel::class.java) }
 
@@ -42,8 +40,9 @@ class MechanismPartOneFragment : SupportFragment() {
             if (TextUtils.isEmpty(code)) {
                 Toast.makeText(context, R.string.please_input_mechanism_code, Toast.LENGTH_SHORT).show()
             } else {
-
+                showDialog()
                 formPartOneViewModel.checkMechanismCode(code).observe(this, Observer {
+                    hideDialog()
                     if (it != false) {
                         val bundle = Bundle()
                         bundle.putString("org_number", code)

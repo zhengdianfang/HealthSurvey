@@ -53,4 +53,5 @@
     <string name="ablum">相册</string>
     <string name="camera">相机</string>
     <string name="max_upload_pic_count">最多上传9张图片</string>
+    <string name="loading">加载中...</string>
 </resources>

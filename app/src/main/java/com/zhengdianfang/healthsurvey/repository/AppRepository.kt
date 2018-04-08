@@ -25,6 +25,7 @@ class AppRepository {
                 .getProducts(WebService.gson.toJson(Request(null, null)))
                 .enqueue(object : Callback<Response<MutableList<Product>>> {
                     override fun onFailure(call: Call<Response<MutableList<Product>>>?, t: Throwable?) {
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<MutableList<Product>>>?,
@@ -47,6 +48,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Description>> {
                     override fun onFailure(call: Call<Response<Description>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Description>>?,
@@ -69,6 +71,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Form>> {
                     override fun onFailure(call: Call<Response<Form>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Form>>?, response: retrofit2.Response<Response<Form>>?) {
@@ -100,6 +103,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Any>> {
                     override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
@@ -120,6 +124,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Any>> {
                     override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
@@ -140,6 +145,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<PartGroup>> {
                     override fun onFailure(call: Call<Response<PartGroup>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<PartGroup>>?, response: retrofit2.Response<Response<PartGroup>>?) {
@@ -162,6 +168,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Form>> {
                     override fun onFailure(call: Call<Response<Form>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Form>>?, response: retrofit2.Response<Response<Form>>?) {
@@ -185,6 +192,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Any>> {
                     override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
@@ -205,6 +213,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Any>> {
                     override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
@@ -225,6 +234,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Any>> {
                     override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
@@ -247,6 +257,7 @@ class AppRepository {
                 .enqueue(object : Callback<Response<Pic>> {
                     override fun onFailure(call: Call<Response<Pic>>?, t: Throwable?) {
                         t?.printStackTrace()
+                        data.value = null
                     }
 
                     override fun onResponse(call: Call<Response<Pic>>?, response: retrofit2.Response<Response<Pic>>?) {
@@ -257,6 +268,13 @@ class AppRepository {
 
                 })
         return data
+    }
+
+    fun upgradleApp(callback: Callback<Response<Version>>) {
+        WebService.retrofit
+                .create(WebService.Api::class.java)
+                .upgradleApp()
+                .enqueue(callback)
     }
 
 }

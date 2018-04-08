@@ -39,7 +39,7 @@ import java.io.File
 /**
  * A simple [Fragment] subclass.
  */
-open class FormPartOneFragment : SupportFragment() {
+open class FormPartOneFragment : BaseFragment() {
 
     private val MAX_ATTACHMENT_COUNT = 9
 
@@ -71,7 +71,9 @@ open class FormPartOneFragment : SupportFragment() {
             if (verifyAnswers()) {
                 if (null != this.form && !TextUtils.isEmpty(phoneNumber)) {
                     form?.attachment_files = attachments.toTypedArray()
+                    showDialog()
                     formPartOneViewModel.submitUserInfo(Util.getUnquieid(phoneNumber) , this.form!!, this.org_number).observe(this, Observer {
+                        hideDialog()
                         if (it != false) {
                             val bundle = Bundle()
                             bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
@@ -156,7 +158,9 @@ open class FormPartOneFragment : SupportFragment() {
                 }
             }
             if (TextUtils.isEmpty(takePhotoFilePath).not()) {
+                showDialog()
                 formPartOneViewModel.uploadPic(File(takePhotoFilePath)).observe(this, Observer {
+                    hideDialog()
                     if (TextUtils.isEmpty(it).not()) {
                         this.attachments.add(it!!)
                         tagFlowLayout?.adapter?.notifyDataChanged()
@@ -170,9 +174,11 @@ open class FormPartOneFragment : SupportFragment() {
 
 
     open fun initDatas() {
+        showDialog()
         formPartOneViewModel
                 .getUserBase(org_number)
                 .observe(this, Observer { form ->
+                    hideDialog()
                     initViews(form)
                 })
     }

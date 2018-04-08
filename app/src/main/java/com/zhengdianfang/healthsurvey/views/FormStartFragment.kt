@@ -7,18 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zhengdianfang.healthsurvey.AppApplication
-
 import com.zhengdianfang.healthsurvey.R
 import kotlinx.android.synthetic.main.fragment_personal.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
-import me.yokeyword.fragmentation.SupportFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class FormStartFragment : SupportFragment() {
+class FormStartFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

@@ -6,18 +6,16 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.zhengdianfang.healthsurvey.R
 import kotlinx.android.synthetic.main.fragment_finish.*
 import kotlinx.android.synthetic.main.tool_bar.*
-import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.defaultSharedPreferences
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class FinishFragment : SupportFragment() {
+class FinishFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

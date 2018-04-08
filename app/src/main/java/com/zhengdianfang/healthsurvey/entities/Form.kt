@@ -9,6 +9,7 @@ data class Form(
         var required: String,
         var attachment: String,
         var prize_url: String,
+        var attachment_files: Array<String>?,
         var subdata: MutableList<Question>? = null
 ) {
     companion object {

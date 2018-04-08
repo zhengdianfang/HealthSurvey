@@ -50,4 +50,7 @@
     <string name="survey_finish_title">问卷全部作答完毕</string>
     <string name="save_success">保存成功</string>
     <string name="cancel">取消</string>
+    <string name="ablum">相册</string>
+    <string name="camera">相机</string>
+    <string name="max_upload_pic_count">最多上传9张图片</string>
 </resources>

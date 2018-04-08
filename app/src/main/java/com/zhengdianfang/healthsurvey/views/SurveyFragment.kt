@@ -14,7 +14,6 @@ import android.widget.Toast
 import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
-import com.zhengdianfang.healthsurvey.entities.Condition
 import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
@@ -51,19 +50,9 @@ open class SurveyFragment : FormPartOneFragment() {
 
         view?.findViewById<Button>(R.id.saveButton)?.setOnClickListener {
             Util.saveQuestionCache(context, form?.subdata)
-            if (null != this.form) {
-                run breadking@ {
-                    components.forEach {
-                        if (!it.verify()) {
-                            return@breadking
-                        }
-                        if (it.question.condition?.checkType == Condition.PHONENUMBER_TYPE.toString()) {
-                            this.phoneNumber = it.question?.answers?.answer
-                        }
-                    }
-
-                }
+            if (null != this.form && verifyAnswers()) {
                 (context?.applicationContext as AppApplication).surveyStatusCache[this.form?.id!!] = true
+                this.form?.attachment_files = attachments.toTypedArray()
                 formViewModel.submitSurveyForm(this.form!!, this.uniqueid, this.org_number).observe(this, Observer {
                     if (it != false) {
                         pop()
@@ -103,8 +92,7 @@ open class SurveyFragment : FormPartOneFragment() {
                 }
             }
             if (form.attachment == Form.HAVE_ATTACHMENT.toString()) {
-                val attachmentView = LayoutInflater.from(context).inflate(R.layout.attachment_layout, null)
-                surveyViewGroup.addView(attachmentView)
+                surveyViewGroup.addView(renderAttachment())
             }
         }
     }

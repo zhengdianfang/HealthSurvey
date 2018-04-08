@@ -20,6 +20,7 @@ import me.yokeyword.fragmentation.SupportFragment
 class MainFragment : SupportFragment() {
 
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -31,6 +32,7 @@ class MainFragment : SupportFragment() {
 
         initData()
         bindEvent()
+
     }
 
     private fun initData() {

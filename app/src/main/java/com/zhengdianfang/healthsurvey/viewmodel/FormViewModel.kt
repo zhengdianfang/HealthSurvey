@@ -3,11 +3,11 @@ package com.zhengdianfang.healthsurvey.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import com.zhengdianfang.healthsurvey.Des4
 import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.Header
 import com.zhengdianfang.healthsurvey.entities.Request
 import com.zhengdianfang.healthsurvey.repository.AppRepository
+import java.io.File
 
 /**
  * Created by dfgzheng on 05/04/2018.
@@ -44,4 +44,9 @@ class FormViewModel(application: Application) : AndroidViewModel(application) {
         return appRepository.trachDirection(uniqueid, org_number, track)
 
     }
+
+    fun uploadPic(file: File): LiveData<String> {
+       return appRepository.uploadPic(file)
+    }
+
 }

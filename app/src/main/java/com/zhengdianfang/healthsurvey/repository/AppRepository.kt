@@ -5,8 +5,12 @@ import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
+import java.io.File
 
 
 /**
@@ -227,6 +231,28 @@ class AppRepository {
                         Log.d("AppRepository", response?.message())
                         val body = response?.body()
                         data.value = body?.data
+                    }
+
+                })
+        return data
+    }
+
+    fun uploadPic(file: File): LiveData<String> {
+        val data = MutableLiveData<String>()
+        val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
+        val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
+        WebService.retrofit
+                .create(WebService.Api::class.java)
+                .uploadPic(body)
+                .enqueue(object : Callback<Response<Pic>> {
+                    override fun onFailure(call: Call<Response<Pic>>?, t: Throwable?) {
+                        t?.printStackTrace()
+                    }
+
+                    override fun onResponse(call: Call<Response<Pic>>?, response: retrofit2.Response<Response<Pic>>?) {
+                        Log.d("AppRepository", response?.message())
+                        val body = response?.body()
+                        data.value = body?.data?.picurl
                     }
 
                 })

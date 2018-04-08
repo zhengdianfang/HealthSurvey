@@ -3,12 +3,15 @@ package com.zhengdianfang.healthsurvey.views
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
@@ -17,13 +20,20 @@ import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.Product
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
+import com.zhengdianfang.healthsurvey.views.adapter.AttachmentAdapter
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
 import com.zhengdianfang.healthsurvey.views.components.ProductCodeElection
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
+import com.zhy.view.flowlayout.TagFlowLayout
 import kotlinx.android.synthetic.main.fragment_form_part_one.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
+import org.jetbrains.anko.support.v4.selector
+import org.jetbrains.anko.support.v4.toast
+import java.io.File
 
 
 /**
@@ -31,11 +41,16 @@ import me.yokeyword.fragmentation.SupportFragment
  */
 open class FormPartOneFragment : SupportFragment() {
 
+    private val MAX_ATTACHMENT_COUNT = 9
+
     private val components: MutableList<BaseComponent> = arrayListOf()
     private val formPartOneViewModel by lazy { ViewModelProviders.of(this) .get(FormViewModel::class.java) }
     private var form: Form? = null
     protected var phoneNumber: String = ""
     private val org_number by lazy { arguments?.getString("org_number") ?: "" }
+    private var takePhotoFilePath: String = ""
+    protected val attachments = mutableListOf<String>()
+    private var tagFlowLayout: TagFlowLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -53,28 +68,20 @@ open class FormPartOneFragment : SupportFragment() {
     open fun initEvents() {
         nextStepButton.setOnClickListener {
             Util.saveQuestionCache(context, form?.subdata)
-            run breadking@ {
-                components.forEach {
-                    if (!it.verify()) {
-                        return@breadking
-                    }
-                    if (it.question.condition?.checkType == Condition.PHONENUMBER_TYPE.toString()) {
-                        this.phoneNumber = it.question?.answers?.answer ?: ""
-                    }
+            if (verifyAnswers()) {
+                if (null != this.form && !TextUtils.isEmpty(phoneNumber)) {
+                    form?.attachment_files = attachments.toTypedArray()
+                    formPartOneViewModel.submitUserInfo(Util.getUnquieid(phoneNumber) , this.form!!, this.org_number).observe(this, Observer {
+                        if (it != false) {
+                            val bundle = Bundle()
+                            bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
+                            bundle.putString("org_number", org_number)
+                            start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, bundle) as ISupportFragment)
+                        } else {
+                            Toast.makeText(context, getString(R.string.save_fail), Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }
-
-            }
-            if (null != this.form && !TextUtils.isEmpty(phoneNumber)) {
-                formPartOneViewModel.submitUserInfo(Util.getUnquieid(phoneNumber) , this.form!!, this.org_number).observe(this, Observer {
-                    if (it != false) {
-                        val bundle = Bundle()
-                        bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
-                        bundle.putString("org_number", org_number)
-                        start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, bundle) as ISupportFragment)
-                    } else {
-                        Toast.makeText(context, getString(R.string.save_fail), Toast.LENGTH_SHORT).show()
-                    }
-                })
             }
         }
 
@@ -82,6 +89,23 @@ open class FormPartOneFragment : SupportFragment() {
             Util.saveQuestionCache(context, form?.subdata)
             pop()
         }
+    }
+
+    protected fun verifyAnswers(): Boolean {
+        var right = true
+        run breadking@{
+            components.forEach {
+                if (!it.verify()) {
+                    right = false
+                    return@breadking
+                }
+                if (it.question.condition?.checkType == Condition.PHONENUMBER_TYPE.toString()) {
+                    this.phoneNumber = it.question?.answers?.answer ?: ""
+                }
+            }
+
+        }
+        return right
     }
 
     protected fun fillProductCode(product: Product) {
@@ -111,22 +135,74 @@ open class FormPartOneFragment : SupportFragment() {
                 }
             }
             if (form.attachment == Form.HAVE_ATTACHMENT.toString()) {
-                val attachmentView = LayoutInflater.from(context).inflate(R.layout.attachment_layout, null)
-                formViewGroup.addView(attachmentView)
+
+                formViewGroup.addView(renderAttachment())
             }
         }
     }
 
-    open fun renderQuestionCustomStyle(view: View) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == ISupportFragment.RESULT_OK) {
+            when(requestCode) {
+                Util.SELECT_PHOTO -> {
+                    takePhotoFilePath = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2)
+                        Util.getFileAbsolutePath(context, data?.data) ?: ""
+                    else
+                        Util.getRealPathBelowVersion(context, data?.data)
+
+                }
+                Util.OPEN_CAMERA -> {
+                    AnkoLogger<String>().debug { data?.toString() }
+                }
+            }
+            if (TextUtils.isEmpty(takePhotoFilePath).not()) {
+                formPartOneViewModel.uploadPic(File(takePhotoFilePath)).observe(this, Observer {
+                    if (TextUtils.isEmpty(it).not()) {
+                        this.attachments.add(it!!)
+                        tagFlowLayout?.adapter?.notifyDataChanged()
+                    }
+                })
+            }
+        }
     }
+
+    open fun renderQuestionCustomStyle(view: View) {}
 
 
     open fun initDatas() {
         formPartOneViewModel
-                .getUserBase(org_number ?: "")
+                .getUserBase(org_number)
                 .observe(this, Observer { form ->
                     initViews(form)
                 })
+    }
+
+
+
+    protected fun renderAttachment(): View {
+        val attachmentView = LayoutInflater.from(context).inflate(R.layout.attachment_layout, null)
+        attachmentView.findViewById<TextView>(R.id.addPicBtn).setOnClickListener {
+            if (this.attachments.count() == MAX_ATTACHMENT_COUNT) {
+                toast(getString(R.string.max_upload_pic_count))
+            } else {
+                selector("", listOf(getString(R.string.ablum), getString(R.string.camera)), { dialog, index ->
+                    if (index == 0) {
+                        startActivityForResult(Util.getIntentImageChooser(), Util.SELECT_PHOTO)
+                    } else {
+                        takePhotoFilePath = Util.getTakePhotoFilePath(context!!).absolutePath
+                        startActivityForResult(Util.getIntentCaptureCompat(context!!, File(takePhotoFilePath)), Util.OPEN_CAMERA)
+                    }
+                })
+            }
+        }
+        tagFlowLayout = attachmentView.findViewById<TagFlowLayout>(R.id.tagFlowLayout)
+        tagFlowLayout?.adapter = AttachmentAdapter(attachments, {pos ->
+            attachments.removeAt(pos)
+            tagFlowLayout?.adapter?.notifyDataChanged()
+        })
+
+
+        return attachmentView
     }
 
 }// Required empty public constructor

@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import com.zhengdianfang.healthsurvey.entities.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -55,7 +54,7 @@ class WebService {
 
         @Multipart
         @POST("api/upload_pic")
-        fun uploadPic(@Part file: MultipartBody.Part): Call<ResponseBody>
+        fun uploadPic(@Part file: MultipartBody.Part): Call<Response<Pic>>
 
         @FormUrlEncoded
         @POST("api/check_org_number")

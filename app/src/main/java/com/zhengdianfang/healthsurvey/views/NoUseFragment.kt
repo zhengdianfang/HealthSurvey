@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.RadioButton
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.entities.Part
@@ -37,7 +36,6 @@ class NoUseFragment : SupportFragment() {
     private val editText by lazy {
         val editText = EditText(context)
         editText.setTextColor(Color.BLACK)
-        editText.layoutParams = FrameLayout.LayoutParams(resources.getDimension(R.dimen.dialog_edittext_width).toInt(), FrameLayout.LayoutParams.WRAP_CONTENT)
         editText.setLines(4)
         editText.gravity = Gravity.TOP
         editText.setBackgroundResource(R.drawable.default_input)

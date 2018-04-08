@@ -13,17 +13,15 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
+import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.Condition
 import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.Question
-import com.zhengdianfang.healthsurvey.entities.QuestionTable
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
 import kotlinx.android.synthetic.main.fragment_survey.*
 import kotlinx.android.synthetic.main.tool_bar.*
-import me.yokeyword.fragmentation.SupportHelper
 
 
 /**
@@ -48,15 +46,11 @@ open class SurveyFragment : FormPartOneFragment() {
    override fun initEvents() {
         back.setOnClickListener {
             pop()
-            this.form?.subdata?.forEach {
-                val questionTable = QuestionTable()
-                questionTable.qid = it.qid
-                questionTable.question = WebService.gson.toJson(it)
-            }
+            Util.saveQuestionCache(context, form?.subdata)
         }
 
         view?.findViewById<Button>(R.id.saveButton)?.setOnClickListener {
-            SupportHelper.hideSoftInput(it)
+            Util.saveQuestionCache(context, form?.subdata)
             if (null != this.form) {
                 run breadking@ {
                     components.forEach {
@@ -64,7 +58,7 @@ open class SurveyFragment : FormPartOneFragment() {
                             return@breadking
                         }
                         if (it.question.condition?.checkType == Condition.PHONENUMBER_TYPE.toString()) {
-                            this.phoneNumber = it.question?.answers?.answer ?: ""
+                            this.phoneNumber = it.question?.answers?.answer
                         }
                     }
 
@@ -81,7 +75,6 @@ open class SurveyFragment : FormPartOneFragment() {
             }
         }
     }
-
 
     override fun initDatas() {
         formViewModel.getSurveyForm(uniqueid, org_number, group_id).observe(this, Observer {

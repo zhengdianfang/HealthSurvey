@@ -35,6 +35,7 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
     fun bindData2View(view: View, autoFill: ((product: Product) -> Unit)?) {
         super.bindData2View(view)
         editText = view.findViewById(R.id.editText)
+        editText?.setText(question.answers.answer)
         if (context is MainActivity) {
             editText?.setAdapter(ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,  context.products.map { it.name }))
             editText?.setOnItemClickListener { _, _, _, _ ->
@@ -50,6 +51,7 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
     }
 
     override fun bindData2OptionsView(view: View, type: Int) {
+
     }
 
     override fun renderOptions(type: Int): View {

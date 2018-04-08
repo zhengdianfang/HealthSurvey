@@ -52,6 +52,7 @@ open class FormPartOneFragment : SupportFragment() {
 
     open fun initEvents() {
         nextStepButton.setOnClickListener {
+            Util.saveQuestionCache(context, form?.subdata)
             run breadking@ {
                 components.forEach {
                     if (!it.verify()) {
@@ -78,6 +79,7 @@ open class FormPartOneFragment : SupportFragment() {
         }
 
         back.setOnClickListener {
+            Util.saveQuestionCache(context, form?.subdata)
             pop()
         }
     }

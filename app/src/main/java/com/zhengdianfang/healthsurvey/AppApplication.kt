@@ -1,8 +1,6 @@
 package com.zhengdianfang.healthsurvey
 
 import android.app.Application
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import me.yokeyword.fragmentation.Fragmentation
 
 
@@ -22,9 +20,6 @@ class AppApplication: Application() {
                 .debug(BuildConfig.DEBUG)
                 .install()
 
-        Realm.init(this)
-        val config = RealmConfiguration.Builder().name("survey.realm").build()
-        Realm.setDefaultConfiguration(config)
     }
 
     override fun onTerminate() {

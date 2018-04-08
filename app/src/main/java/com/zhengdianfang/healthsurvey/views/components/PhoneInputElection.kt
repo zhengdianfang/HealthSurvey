@@ -80,6 +80,7 @@ class PhoneInputElection(context: Context, question: Question) : InputElection(c
         smsEditText = view.findViewById(R.id.smsCodeEditText)
         smsButton?.getPhone = { question.answers?.answer ?: "" }
         editText = view.findViewById(R.id.editText)
+        editText?.setText(question.answers.answer)
         editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 question.answers?.answer = p0?.toString() ?: ""

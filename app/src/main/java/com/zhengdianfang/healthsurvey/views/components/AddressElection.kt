@@ -3,6 +3,7 @@ package com.zhengdianfang.healthsurvey.views.components
 import android.content.Context
 import android.graphics.Color
 import android.view.View
+import android.widget.TextView
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.entities.Question
 
@@ -16,13 +17,14 @@ open class AddressElection(context: Context, question: Question) : BaseComponent
     }
 
     override fun bindData2OptionsView(view: View, type: Int) {
+        view.findViewById<TextView>(R.id.addressTextView).text = question.answers.answer
     }
 
     override fun renderOptions(type: Int): View {
         val textView = AddressTextView(context, { address -> onAddress(address, type)})
         textView.setTextColor(Color.BLACK)
         textView.setText(R.string.default_address)
-        textView.id = R.id.dateTextView
+        textView.id = R.id.addressTextView
         return textView
     }
 

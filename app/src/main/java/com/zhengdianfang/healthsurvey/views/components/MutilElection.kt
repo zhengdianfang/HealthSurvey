@@ -17,12 +17,14 @@ import com.zhengdianfang.healthsurvey.entities.Question
 class MutilElection(context: Context, question: Question) : BaseComponent(context, question) {
 
     override fun bindData2OptionsView(view: View, type: Int) {
+        val lastCheckeds = getCheckedCache(question, type)
         val checkboxGroup = view.findViewById<ViewGroup>(R.id.checkLinearLayout)
         checkboxGroup.removeAllViews()
         question.options?.forEachIndexed { index, option ->
             val linearLayout = LinearLayout(context)
             linearLayout.orientation = LinearLayout.HORIZONTAL
             val checkBox = AppCheckBox(this.context, type)
+            checkBox.isChecked = lastCheckeds.contains(index.toString())
             checkBox.setOnCheckedChangeListener { view, b ->
                 setAnswer(b, index, (view as AppCheckBox).type)
             }
@@ -35,6 +37,14 @@ class MutilElection(context: Context, question: Question) : BaseComponent(contex
             linearLayout.addView(textView, layoutParams)
             checkboxGroup.addView(linearLayout)
         }
+    }
+
+    private fun getCheckedCache(question: Question, type: Int): MutableList<String> {
+        val cacheStr = if (type == FRONT_OPTIONS) question.answers.answer  else question.answers.answer_end
+        if (TextUtils.isEmpty(cacheStr).not()) {
+            return cacheStr.split(",").toMutableList()
+        }
+        return mutableListOf<String>()
     }
 
    private fun setAnswer(checked: Boolean, index: Int, type: Int) {

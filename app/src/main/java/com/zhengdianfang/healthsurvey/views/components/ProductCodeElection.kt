@@ -32,6 +32,7 @@ class ProductCodeElection(context: Context, question: Question) : BaseComponent(
 
     override fun bindData2OptionsView(view: View, type: Int) {
         editText = view.findViewById(R.id.editText)
+        editText?.setText(question.answers.answer)
         editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 question.answers?.answer = p0?.toString() ?: ""

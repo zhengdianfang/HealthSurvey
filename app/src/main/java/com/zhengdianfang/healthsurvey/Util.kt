@@ -1,5 +1,9 @@
 package com.zhengdianfang.healthsurvey
 
+import android.content.Context
+import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
+import com.zhengdianfang.healthsurvey.entities.Question
+import org.jetbrains.anko.defaultSharedPreferences
 import java.util.regex.Pattern
 
 /**
@@ -27,5 +31,14 @@ object Util {
     fun getUnquieid(phone: String): String {
         val time = System.currentTimeMillis().toString().substring(0, 10)
         return Des4.encode(phone + time)
+    }
+
+    fun saveQuestionCache(context: Context?, quetions: MutableList<Question>?) {
+
+        val edit = context?.defaultSharedPreferences?.edit()
+        quetions?.forEach {
+           edit?.putString(it.qid, WebService.gson.toJson(it))
+        }
+        edit?.apply()
     }
 }

@@ -21,6 +21,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.zhengdianfang.healthsurvey.R
+import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Answer
 import com.zhengdianfang.healthsurvey.entities.Condition
 import com.zhengdianfang.healthsurvey.entities.Question
@@ -28,16 +29,23 @@ import com.zhengdianfang.healthsurvey.views.PerviewFragment
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import me.yokeyword.fragmentation.SupportHelper
+import org.jetbrains.anko.defaultSharedPreferences
 
 /**
  * Created by dfgzheng on 05/04/2018.
  */
 abstract class BaseComponent(val context: Context, val question: Question) {
     init {
-        question.answers = Answer("","", "", "")
+        val json = context.defaultSharedPreferences.getString(question.qid, "")
+        if (TextUtils.isEmpty(json).not()) {
+            val questionCache = WebService.gson.fromJson<Question>(json, Question::class.java)
+            question.answers = questionCache.answers
+        } else {
+            question.answers = Answer("","", "", "")
+        }
     }
 
-    protected fun isDoubleQuestion(): Boolean {
+    private fun isDoubleQuestion(): Boolean {
        return question.isComparisonBeforeEat == "1"
     }
 

@@ -30,6 +30,7 @@ open class DateElection(context: Context, question: Question) : BaseComponent(co
     }
 
     override fun bindData2OptionsView(view: View, type: Int) {
+        view.findViewById<TextView>(R.id.dateTextView).text = question.answers.answer
     }
 
     private fun onDate(address: String, type: Int) {

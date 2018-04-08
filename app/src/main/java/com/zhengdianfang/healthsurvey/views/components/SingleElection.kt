@@ -50,10 +50,12 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
     override fun bindData2OptionsView(view: View, type: Int) {
         val radioGroup = view.findViewById<AppRadioGroup>(R.id.radioGroup)
         radioGroup.removeAllViews()
-        question.options?.forEach {
+        val lastCheckedIndex = getLastChecked(type)
+        question.options?.forEachIndexed { index, option ->
             val radioButton = RadioButton(this.context)
-            radioButton.text = it.name
+            radioButton.text = option.name
             radioButton.setTextColor(Color.BLACK)
+            radioButton.isChecked = index == lastCheckedIndex
             val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             layoutParams.topMargin = this.context.resources.getDimension(R.dimen.line_margin_top).toInt()
             radioGroup.addView(radioButton)
@@ -66,6 +68,19 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
                 setAnswer(indexOfChild, (groupView as AppRadioGroup).type)
             }
         }
+    }
+
+    private fun getLastChecked(type: Int): Int {
+        if (type == FRONT_OPTIONS) {
+            if (TextUtils.isEmpty(question.answers.answer).not()) {
+                return question.answers.answer.toInt()
+            }
+        } else {
+            if (TextUtils.isEmpty(question.answers.answer_end).not()) {
+                return question.answers.answer_end.toInt()
+            }
+        }
+        return -1
     }
 
     private fun setAnswer(index: Int, type: Int, extStr: String = "") {

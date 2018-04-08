@@ -11,6 +11,7 @@ import com.zhengdianfang.healthsurvey.R
 import kotlinx.android.synthetic.main.fragment_finish.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.SupportFragment
+import org.jetbrains.anko.defaultSharedPreferences
 
 
 /**
@@ -28,6 +29,7 @@ class FinishFragment : SupportFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        context?.defaultSharedPreferences?.edit()?.clear()?.apply()
         goHomeButton.setOnClickListener {
             popTo(FormStartFragment::class.java, false)
         }

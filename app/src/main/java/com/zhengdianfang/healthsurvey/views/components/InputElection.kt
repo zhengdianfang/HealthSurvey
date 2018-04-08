@@ -36,6 +36,7 @@ open class InputElection(context: Context, question: Question) : BaseComponent(c
 
     override fun bindData2OptionsView(view: View, type: Int) {
         editText = view.findViewById(R.id.editText)
+        editText?.setText(if (type == FRONT_OPTIONS) question.answers.answer else question.answers.answer_end)
         editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (type == FRONT_OPTIONS) {

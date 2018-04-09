@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.entities.Part
 import kotlinx.android.synthetic.main.fragment_form_ask.*
@@ -19,7 +18,6 @@ import me.yokeyword.fragmentation.SupportFragment
  * A simple [Fragment] subclass.
  */
 class FormAskFragment : BaseFragment() {
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,6 +36,7 @@ class FormAskFragment : BaseFragment() {
         yestv.setOnClickListener {
             arguments?.putInt("partType", Part.INUSE)
             start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
+
         }
     }
 

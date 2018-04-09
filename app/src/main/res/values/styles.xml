@@ -10,6 +10,7 @@
         <item name="android:windowBackground">@drawable/app_background</item>
         <item name="android:checkboxStyle">@style/AppTheme.CheckButton</item>
         <item name="android:radioButtonStyle">@style/AppTheme.RadioButton</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
     </style>
 
     <style name="AppTheme.EditTextStyle" parent="@android:style/Widget.EditText">

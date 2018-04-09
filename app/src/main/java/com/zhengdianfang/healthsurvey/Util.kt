@@ -5,6 +5,8 @@ import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -14,14 +16,19 @@ import android.support.v4.content.CursorLoader
 import android.support.v4.content.FileProvider
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Question
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 import org.jetbrains.anko.defaultSharedPreferences
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.util.regex.Pattern
+
 
 /**
  * Created by dfgzheng on 05/04/2018.
  */
-object Util {
+object Util: AnkoLogger {
 
     const val SELECT_PHOTO = 0x000001
     const val OPEN_CAMERA = 0x000002
@@ -73,6 +80,26 @@ object Util {
         i.type = "image/*"
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         return i
+    }
+
+    fun compressBitmap(file: File, sizeLimit: Long) {
+        val baos = ByteArrayOutputStream()
+        var quality = 100
+        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos)
+
+        // 循环判断压缩后图片是否超过限制大小
+        while (baos.toByteArray().size / 1024 > sizeLimit) {
+            // 清空baos
+            baos.reset()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos)
+            quality -= 10
+        }
+
+        val fileOutputStream = FileOutputStream(file)
+        fileOutputStream.write(baos.toByteArray())
+        fileOutputStream.flush()
+        debug("compress file size ${file.length()}")
     }
 
     private fun getUriFromFile(context: Context, file: File): Uri? {

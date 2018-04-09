@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ import com.zhengdianfang.healthsurvey.views.components.BaseComponent
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
 import kotlinx.android.synthetic.main.fragment_survey.*
 import kotlinx.android.synthetic.main.tool_bar.*
+import me.yokeyword.fragmentation.ISupportFragment
+import me.yokeyword.fragmentation.SupportFragment
 
 
 /**
@@ -33,8 +36,6 @@ open class SurveyFragment : FormPartOneFragment() {
     private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
     private val group_id by lazy { arguments?.getString("group_id") ?: "" }
     private var form: Form? = null
-
-    private val components: MutableList<BaseComponent> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,13 +58,24 @@ open class SurveyFragment : FormPartOneFragment() {
                 formViewModel.submitSurveyForm(this.form!!, this.uniqueid, this.org_number).observe(this, Observer {
                     hideDialog()
                     if (it != false) {
-                        pop()
+                        nextFragment()
                         Toast.makeText(context, R.string.save_success, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, R.string.save_fail, Toast.LENGTH_SHORT).show()
                     }
                 })
             }
+        }
+    }
+
+    override fun nextFragment() {
+        pop()
+        if (TextUtils.isEmpty(this.form?.prize_url).not()) {
+            val bundle = Bundle()
+            bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
+            bundle.putString("org_number", org_number)
+            bundle.putString("url", this.form?.prize_url)
+            start(SupportFragment.instantiate(context, PrizeFragment::class.java.name, bundle) as ISupportFragment)
         }
     }
 

@@ -124,12 +124,12 @@ abstract class BaseComponent(val context: Context, val question: Question) {
 
     open fun verify(): Boolean {
         if (isRequried()) {
-            if (question.answers == null || TextUtils.isEmpty(question.answers?.answer)) {
+            if (TextUtils.isEmpty(question.answers.answer)) {
                 Toast.makeText(context, context.getString(R.string.please_input_x_content, question.title), Toast.LENGTH_SHORT).show()
                 return false
             }
             if (isDoubleQuestion()) {
-                if (TextUtils.isEmpty(question.answers?.answer_end)) {
+                if (TextUtils.isEmpty(question.answers.answer_end)) {
                     Toast.makeText(context, context.getString(R.string.please_input_x_content, question.title), Toast.LENGTH_SHORT).show()
                     return false
                 }

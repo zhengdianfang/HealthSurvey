@@ -1,9 +1,11 @@
 package com.zhengdianfang.healthsurvey.views.components
 
 import android.content.Context
+import android.graphics.Color
 import android.widget.TextView
 import chihane.jdaddressselector.BottomDialog
 import chihane.jdaddressselector.OnAddressSelectedListener
+import com.zhengdianfang.healthsurvey.R
 
 /**
  * Created by dfgzheng on 07/04/2018.
@@ -23,6 +25,8 @@ class AddressTextView(context: Context?, private val onAnswer: (answer: String) 
     }
 
     init {
+        setTextColor(Color.BLACK)
+        setText(R.string.default_address)
         setOnClickListener { addressDialog.show() }
     }
 

@@ -1,6 +1,7 @@
 package com.zhengdianfang.healthsurvey.views.components
 
 import android.content.Context
+import android.graphics.Color
 import android.widget.TextView
 import com.zhengdianfang.healthsurvey.R
 import me.yokeyword.fragmentation.SupportActivity
@@ -25,15 +26,17 @@ class DateTextView(context: Context?, private val onDate: (date: String) -> Unit
     private val onDateSetListener =
             com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val dateStr = context?.getString(R.string.input_date, year, monthOfYear, dayOfMonth)!!
-                this?.text = dateStr
+                this.text = dateStr
                 onDate(dateStr)
             }
 
 
     init {
+        setTextColor(Color.BLACK)
+        this.text = context?.getString(R.string.default_date)
         setOnClickListener {
             if (context is SupportActivity) {
-                datePickDialog.show((context as SupportActivity).fragmentManager, "dateDialog")
+                datePickDialog.show((context).fragmentManager, "dateDialog")
             }
         }
     }

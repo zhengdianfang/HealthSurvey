@@ -43,7 +43,7 @@ open class FormPartOneFragment : BaseFragment() {
 
     private val MAX_ATTACHMENT_COUNT = 9
 
-    private val components: MutableList<BaseComponent> = arrayListOf()
+    protected val components: MutableList<BaseComponent> = arrayListOf()
     private val formPartOneViewModel by lazy { ViewModelProviders.of(this) .get(FormViewModel::class.java) }
     private var form: Form? = null
     protected var phoneNumber: String = ""
@@ -75,10 +75,7 @@ open class FormPartOneFragment : BaseFragment() {
                     formPartOneViewModel.submitUserInfo(Util.getUnquieid(phoneNumber) , this.form!!, this.org_number).observe(this, Observer {
                         hideDialog()
                         if (it != false) {
-                            val bundle = Bundle()
-                            bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
-                            bundle.putString("org_number", org_number)
-                            start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, bundle) as ISupportFragment)
+                            nextFragment()
                         } else {
                             Toast.makeText(context, getString(R.string.save_fail), Toast.LENGTH_SHORT).show()
                         }
@@ -93,19 +90,27 @@ open class FormPartOneFragment : BaseFragment() {
         }
     }
 
-    protected fun verifyAnswers(): Boolean {
-        var right = true
-        run breadking@{
-            components.forEach {
-                if (!it.verify()) {
-                    right = false
-                    return@breadking
-                }
-                if (it.question.condition?.checkType == Condition.PHONENUMBER_TYPE.toString()) {
-                    this.phoneNumber = it.question?.answers?.answer ?: ""
-                }
-            }
+    open fun nextFragment() {
+        val bundle = Bundle()
+        bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
+        bundle.putString("org_number", org_number)
+        start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, bundle) as ISupportFragment)
+        if (TextUtils.isEmpty(this.form?.prize_url).not()) {
+            bundle.putString("url", this.form?.prize_url)
+            start(SupportFragment.instantiate(context, PrizeFragment::class.java.name, bundle) as ISupportFragment)
+        }
+    }
 
+    open fun verifyAnswers(): Boolean {
+        var right = true
+        for (component in components) {
+            if (!component.verify()) {
+                    right = false
+                    break
+            }
+            if (component.question.condition?.checkType == Condition.PHONENUMBER_TYPE.toString()) {
+                this.phoneNumber = component.question?.answers.answer
+            }
         }
         return right
     }
@@ -159,6 +164,7 @@ open class FormPartOneFragment : BaseFragment() {
             }
             if (TextUtils.isEmpty(takePhotoFilePath).not()) {
                 showDialog()
+                Util.compressBitmap(File(takePhotoFilePath), 200)
                 formPartOneViewModel.uploadPic(File(takePhotoFilePath)).observe(this, Observer {
                     hideDialog()
                     if (TextUtils.isEmpty(it).not()) {
@@ -201,7 +207,7 @@ open class FormPartOneFragment : BaseFragment() {
                 })
             }
         }
-        tagFlowLayout = attachmentView.findViewById<TagFlowLayout>(R.id.tagFlowLayout)
+        tagFlowLayout = attachmentView.findViewById(R.id.tagFlowLayout)
         tagFlowLayout?.adapter = AttachmentAdapter(attachments, {pos ->
             attachments.removeAt(pos)
             tagFlowLayout?.adapter?.notifyDataChanged()

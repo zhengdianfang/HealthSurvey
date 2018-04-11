@@ -38,6 +38,8 @@ class FormAskFragment : BaseFragment() {
             start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
 
         }
+
+        back.setOnClickListener { pop() }
     }
 
 }// Required empty public constructor

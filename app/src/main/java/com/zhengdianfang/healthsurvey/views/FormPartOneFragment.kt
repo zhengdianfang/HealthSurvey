@@ -170,6 +170,9 @@ open class FormPartOneFragment : BaseFragment() {
                     if (TextUtils.isEmpty(it).not()) {
                         this.attachments.add(it!!)
                         tagFlowLayout?.adapter?.notifyDataChanged()
+                        toast(getString(R.string.upload_success))
+                    } else {
+                        toast(getString(R.string.upload_failure))
                     }
                 })
             }

@@ -35,7 +35,7 @@
     <string name="save">保存</string>
     <string name="default_date">_年_月_日</string>
     <string name="default_address">_省_市_县</string>
-    <string name="input_date">%1$d年%2$d月%3$d日</string>
+    <string name="input_date">%1$d年%2$s月%3$s日</string>
     <string name="eat_front">食用前</string>
     <string name="eat_end">食用后</string>
     <string name="save_fail">保存失败</string>
@@ -57,4 +57,6 @@
     <string name="frize_content">感谢您对于本次问卷的参与和帮助</string>
     <string name="continue_reply">继续问卷</string>
     <string name="click_prize">点击领奖</string>
+    <string name="upload_success">上传成功</string>
+    <string name="upload_failure">上传失败</string>
 </resources>

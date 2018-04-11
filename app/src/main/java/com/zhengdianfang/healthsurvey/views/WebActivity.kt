@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import com.just.agentweb.AgentWeb
 import com.zhengdianfang.healthsurvey.R
+import kotlinx.android.synthetic.main.tool_bar.*
 
 
 class WebActivity : Activity() {
@@ -20,6 +21,11 @@ class WebActivity : Activity() {
                 .createAgentWeb()
                 .ready()
                 .go(intent.getStringExtra("url"))
+
+
+        back.setOnClickListener {
+            finish()
+        }
     }
 
 

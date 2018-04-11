@@ -46,7 +46,7 @@ class GroupListFragment : BaseFragment() {
                 })
                 .setNegativeButton(getString(R.string.finish), { _, _ ->
                     formViewModel.surveyFinish(uniqueid, org_number)
-                    popTo(FormStartFragment::class.java, false)
+                    start(SupportFragment.instantiate(context, FinishFragment::class.java.name, arguments) as ISupportFragment)
                 })
                 .setMessage(R.string.goon_dailog_content)
                 .create()

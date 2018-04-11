@@ -72,8 +72,22 @@ class NoUseFragment : BaseFragment() {
 
         noUseRadioGroup.setOnCheckedChangeListener { groupView, checkId ->
             this.index = groupView.indexOfChild(groupView.findViewById<RadioButton>(checkId))
-            if (this.index == 3) {
-                alertDialog.show()
+            when(this.index) {
+                1 -> {
+                    selector("", mutableListOf("价格不合理", "效果不明显", "服用方式不习惯", "上门销售", "其他"), { _, index ->
+                        when (index) {
+                            0 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.1 停止使用-->对产品不满意-->价格不合理")
+                            1 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.2 停止使用-->对产品不满意-->效果不明显")
+                            2 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.3 停止使用-->对产品不满意-->服用方式不习惯")
+                            3 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.4 停止使用-->对产品不满意-->上门销售")
+                            4 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.5 停止使用-->对产品不满意-->其他")
+                        }
+                        start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
+                    })
+                }
+                3 -> {
+                    alertDialog.show()
+                }
             }
         }
 
@@ -86,17 +100,6 @@ class NoUseFragment : BaseFragment() {
                 0-> {
                     arguments?.putInt("partType", Part.NOUSE)
                     start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
-                }
-                1 -> {
-                    selector("", mutableListOf("价格不合理", "效果不明显", "服用方式不习惯", "上门销售", "其他"), { _, index ->
-                        when(index){
-                            0 -> formViewModel.trachDirection(uniqueid, org_number,  "2.2.1 停止使用-->对产品不满意-->价格不合理")
-                            1 -> formViewModel.trachDirection(uniqueid, org_number,  "2.2.2 停止使用-->对产品不满意-->效果不明显")
-                            2 -> formViewModel.trachDirection(uniqueid, org_number,  "2.2.3 停止使用-->对产品不满意-->服用方式不习惯")
-                            3 -> formViewModel.trachDirection(uniqueid, org_number,  "2.2.4 停止使用-->对产品不满意-->上门销售")
-                            4 -> formViewModel.trachDirection(uniqueid, org_number,  "2.2.5 停止使用-->对产品不满意-->其他")
-                        }
-                    })
                 }
                 2 -> {
                     formViewModel.trachDirection(uniqueid, org_number,  "2.3 特殊情况（妊娠期、哺乳期等）")

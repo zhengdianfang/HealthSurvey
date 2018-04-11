@@ -25,7 +25,9 @@ class DateTextView(context: Context?, private val onDate: (date: String) -> Unit
 
     private val onDateSetListener =
             com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val dateStr = context?.getString(R.string.input_date, year, monthOfYear, dayOfMonth)!!
+                val month = if (monthOfYear / 10 < 1) "0$monthOfYear" else monthOfYear
+                val day = if (dayOfMonth / 10 < 1) "0$dayOfMonth" else dayOfMonth
+                val dateStr = context?.getString(R.string.input_date, year, month, day)!!
                 this.text = dateStr
                 onDate(dateStr)
             }

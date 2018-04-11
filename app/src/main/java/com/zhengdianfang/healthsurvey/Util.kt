@@ -111,7 +111,7 @@ object Util: AnkoLogger {
     }
 
     private fun getUriFromFileForN(context: Context, file: File): Uri {
-        return FileProvider.getUriForFile(context, context.packageName + ".FileProvider", file)
+        return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", file)
     }
 
     fun getTakePhotoFilePath(context: Context): File {

@@ -1,12 +1,10 @@
 package com.zhengdianfang.healthsurvey
 
-import android.Manifest
 import android.app.DownloadManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import com.zhengdianfang.healthsurvey.entities.Product
@@ -27,7 +25,6 @@ import retrofit2.Callback
 class MainActivity : SupportActivity() {
 
     val products = mutableListOf<Product>()
-    private val REQUEST_PERMISSIONS = 0x000003
     private val appRepository by lazy { AppRepository() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,17 +41,10 @@ class MainActivity : SupportActivity() {
                 products.addAll(it)
         })
 
-        requestPermission()
+//        requestPermission()
         checkUpdate()
     }
 
-    private fun requestPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA),
-                    REQUEST_PERMISSIONS)
-        }
-    }
 
     private fun checkUpdate() {
         appRepository.upgradleApp(object : Callback<Response<Version>> {
@@ -87,12 +77,6 @@ class MainActivity : SupportActivity() {
                     }
                 }
             }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_PERMISSIONS) {
-
         }
     }
 

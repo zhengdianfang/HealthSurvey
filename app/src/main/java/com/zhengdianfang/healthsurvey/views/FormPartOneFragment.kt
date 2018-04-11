@@ -1,6 +1,7 @@
 package com.zhengdianfang.healthsurvey.views
 
 
+import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -193,7 +194,6 @@ open class FormPartOneFragment : BaseFragment() {
     }
 
 
-
     protected fun renderAttachment(): View {
         val attachmentView = LayoutInflater.from(context).inflate(R.layout.attachment_layout, null)
         attachmentView.findViewById<TextView>(R.id.addPicBtn).setOnClickListener {
@@ -202,10 +202,14 @@ open class FormPartOneFragment : BaseFragment() {
             } else {
                 selector("", listOf(getString(R.string.ablum), getString(R.string.camera)), { dialog, index ->
                     if (index == 0) {
-                        startActivityForResult(Util.getIntentImageChooser(), Util.SELECT_PHOTO)
+                        requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), {
+                            startActivityForResult(Util.getIntentImageChooser(), Util.SELECT_PHOTO)
+                        })
                     } else {
-                        takePhotoFilePath = Util.getTakePhotoFilePath(context!!).absolutePath
-                        startActivityForResult(Util.getIntentCaptureCompat(context!!, File(takePhotoFilePath)), Util.OPEN_CAMERA)
+                        requestPermission(arrayOf(Manifest.permission.CAMERA), {
+                            takePhotoFilePath = Util.getTakePhotoFilePath(context!!).absolutePath
+                            startActivityForResult(Util.getIntentCaptureCompat(context!!, File(takePhotoFilePath)), Util.OPEN_CAMERA)
+                        })
                     }
                 })
             }

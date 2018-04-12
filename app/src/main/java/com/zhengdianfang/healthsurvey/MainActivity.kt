@@ -60,6 +60,7 @@ class MainActivity : SupportActivity() {
                 val alertDialog = AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_MinWidth)
                         .setPositiveButton(getString(R.string.upgradel), { _, _ ->
                             browse(version?.android_url)
+                            System.exit(-1)
                         })
                         .setMessage(R.string.goon_dailog_content)
                         .create()

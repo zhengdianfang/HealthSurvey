@@ -59,4 +59,5 @@
     <string name="click_prize">点击领奖</string>
     <string name="upload_success">上传成功</string>
     <string name="upload_failure">上传失败</string>
+    <string name="upgradel">更新</string>
 </resources>

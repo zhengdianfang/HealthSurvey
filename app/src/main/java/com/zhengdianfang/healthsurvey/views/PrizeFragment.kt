@@ -36,6 +36,7 @@ class PrizeFragment : BaseFragment() {
             pop()
             startActivity(Intent(activity, WebActivity::class.java).putExtra("url", arguments?.getString("url")))
         }
+        back.setOnClickListener { pop() }
     }
 
 }

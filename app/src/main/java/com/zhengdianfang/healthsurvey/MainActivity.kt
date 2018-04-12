@@ -1,12 +1,9 @@
 package com.zhengdianfang.healthsurvey
 
-import android.app.DownloadManager
+import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import com.zhengdianfang.healthsurvey.entities.Product
 import com.zhengdianfang.healthsurvey.entities.Response
 import com.zhengdianfang.healthsurvey.entities.Version
@@ -16,9 +13,7 @@ import com.zhengdianfang.healthsurvey.views.MainFragment
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportActivity
 import me.yokeyword.fragmentation.SupportFragment
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.yesButton
+import org.jetbrains.anko.browse
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -58,24 +53,24 @@ class MainActivity : SupportActivity() {
         })
     }
 
-    private fun downloadNewVersionApk(url: String) {
-        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val request = DownloadManager.Request(Uri.parse(url))
-        request.setNotificationVisibility(View.VISIBLE)
-        downloadManager.enqueue(request)
-    }
 
     private fun alertUpdateDialog(version: Version?) {
         if (version != null) {
             if (version.newversion != packageManager.getPackageInfo(packageName, 0).versionName) {
-                alert(version.updateInfos){
-                    yesButton { downloadNewVersionApk(version?.android_url) }
-                    noButton {
-                        if (version.type == Version.MUST){
-                            System.exit(-1)
-                        }
-                    }
+                val alertDialog = AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_MinWidth)
+                        .setPositiveButton(getString(R.string.upgradel), { _, _ ->
+                            browse(version?.android_url)
+                        })
+                        .setMessage(R.string.goon_dailog_content)
+                        .create()
+
+                if (version.type != Version.MUST) {
+                    alertDialog.setCancelable(false)
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), {_, _  ->})
                 }
+                alertDialog.setCanceledOnTouchOutside(false)
+                alertDialog.show()
+
             }
         }
     }

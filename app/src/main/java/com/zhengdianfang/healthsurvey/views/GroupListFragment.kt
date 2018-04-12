@@ -129,7 +129,6 @@ class GroupListFragment : BaseFragment() {
             adapter.notifyDataSetChanged()
 
         })
-        formViewModel.trachDirection(uniqueid, org_number, "1 仍在使用(正常问卷)")
     }
 
     override fun onSupportVisible() {

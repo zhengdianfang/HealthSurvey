@@ -67,7 +67,9 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
             }
         }
         val lastCheckedIndex = getLastChecked(type)
-        radioGroup.check(radioGroup.getChildAt(lastCheckedIndex).id)
+        if (lastCheckedIndex >= 0 && lastCheckedIndex < radioGroup.childCount) {
+            radioGroup.check(radioGroup.getChildAt(lastCheckedIndex).id)
+        }
     }
 
     private fun getLastChecked(type: Int): Int {

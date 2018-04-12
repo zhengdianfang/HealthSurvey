@@ -88,5 +88,9 @@ class WebService {
 
         @GET("api/get_version")
         fun upgradleApp(): Call<Response<Version>>
+
+        @FormUrlEncoded
+        @POST("api/report_info")
+        fun uploadDeviceInfo(@Field("data") request: String): Call<Response<Any>>
     }
 }

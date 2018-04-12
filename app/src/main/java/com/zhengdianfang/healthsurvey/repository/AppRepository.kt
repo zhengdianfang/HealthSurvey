@@ -277,4 +277,21 @@ class AppRepository {
                 .enqueue(callback)
     }
 
+
+    fun uploadDeviceInfo(uniqueid: String, screenheight:Int, screenwidth: Int,
+                        version: String, versioncode: Int) {
+
+        WebService.retrofit
+                .create(WebService.Api::class.java)
+                .uploadDeviceInfo(WebService.gson.toJson(Request(DeviceHeader(uniqueid, screenheight, screenwidth, version, versioncode), null)))
+                .enqueue(object : Callback<Response<Any>> {
+                    override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
+                    }
+
+                    override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
+                    }
+
+                })
+    }
+
 }

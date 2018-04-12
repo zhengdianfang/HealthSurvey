@@ -3,6 +3,7 @@ package com.zhengdianfang.healthsurvey.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.Header
 import com.zhengdianfang.healthsurvey.entities.Request
@@ -47,6 +48,18 @@ class FormViewModel(application: Application) : AndroidViewModel(application) {
 
     fun uploadPic(file: File): LiveData<String> {
        return appRepository.uploadPic(file)
+    }
+
+    fun uploadDeviceInfo(uniqueid: String) {
+
+        val application = getApplication<AppApplication>()
+        appRepository.uploadDeviceInfo(uniqueid,
+                application.applicationContext.resources.displayMetrics.heightPixels,
+                application.applicationContext.resources.displayMetrics.widthPixels,
+                application.applicationContext.packageManager.getPackageInfo(application.packageName, 0).versionName,
+                application.applicationContext.packageManager.getPackageInfo(application.packageName, 0).versionCode
+                )
+
     }
 
 }

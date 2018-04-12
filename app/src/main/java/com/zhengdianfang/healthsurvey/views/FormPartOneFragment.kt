@@ -77,6 +77,7 @@ open class FormPartOneFragment : BaseFragment() {
                         hideDialog()
                         if (it != false) {
                             nextFragment()
+                            formPartOneViewModel.uploadDeviceInfo(Util.getUnquieid(phoneNumber))
                         } else {
                             Toast.makeText(context, getString(R.string.save_fail), Toast.LENGTH_SHORT).show()
                         }

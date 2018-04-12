@@ -37,7 +37,7 @@ class FormAskFragment : BaseFragment() {
         titleTextView.setText(R.string.question_title)
 
         notv.setOnClickListener {
-            start(SupportFragment.instantiate(context, NoUseFragment::class.java.name) as ISupportFragment)
+            start(SupportFragment.instantiate(context, NoUseFragment::class.java.name, arguments) as ISupportFragment)
         }
         yestv.setOnClickListener {
             arguments?.putInt("partType", Part.INUSE)

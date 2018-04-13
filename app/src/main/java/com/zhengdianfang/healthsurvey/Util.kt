@@ -99,6 +99,8 @@ object Util: AnkoLogger {
         val fileOutputStream = FileOutputStream(file)
         fileOutputStream.write(baos.toByteArray())
         fileOutputStream.flush()
+        fileOutputStream.close()
+        baos.close()
         debug("compress file size ${file.length()}")
     }
 
@@ -115,7 +117,9 @@ object Util: AnkoLogger {
     }
 
     fun getTakePhotoFilePath(context: Context): File {
-        return File("${context.cacheDir.absolutePath}${File.separator}${System.currentTimeMillis()}.jpg")
+        val file = File("${context.externalCacheDir.absolutePath}${File.separator}${System.currentTimeMillis()}.jpg")
+        file.createNewFile()
+        return file
     }
 
 

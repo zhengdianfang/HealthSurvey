@@ -34,6 +34,8 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
 import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.toast
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
 import java.io.File
 
 
@@ -166,19 +168,37 @@ open class FormPartOneFragment : BaseFragment() {
             }
             if (TextUtils.isEmpty(takePhotoFilePath).not()) {
                 showDialog()
-                Util.compressBitmap(File(takePhotoFilePath), 200)
-                formPartOneViewModel.uploadPic(File(takePhotoFilePath)).observe(this, Observer {
-                    hideDialog()
-                    if (TextUtils.isEmpty(it).not()) {
-                        this.attachments.add(it!!)
-                        tagFlowLayout?.adapter?.notifyDataChanged()
-                        toast(getString(R.string.upload_success))
-                    } else {
-                        toast(getString(R.string.upload_failure))
-                    }
-                })
+                Luban.with(context)
+                        .load(File(takePhotoFilePath))
+                        .setTargetDir(context?.externalCacheDir?.absolutePath)
+                        .setCompressListener(object : OnCompressListener {
+                            override fun onSuccess(file: File?) {
+                                if (null != file) {
+                                    uploadPic(file)
+                                }
+                            }
+
+                            override fun onError(e: Throwable?) {
+                            }
+
+                            override fun onStart() {
+                            }
+                        }).launch()
             }
         }
+    }
+
+    fun uploadPic(file: File) {
+        formPartOneViewModel.uploadPic(file).observe(this, Observer {
+            hideDialog()
+            if (TextUtils.isEmpty(it).not()) {
+                this.attachments.add(it!!)
+                tagFlowLayout?.adapter?.notifyDataChanged()
+                toast(getString(R.string.upload_success))
+            } else {
+                toast(getString(R.string.upload_failure))
+            }
+        })
     }
 
     open fun renderQuestionCustomStyle(view: View) {}

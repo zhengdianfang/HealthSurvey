@@ -100,6 +100,7 @@ class NoUseFragment : BaseFragment() {
                 0-> {
                     arguments?.putInt("partType", Part.NOUSE)
                     start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
+                    formViewModel.trachDirection(uniqueid, org_number, "2.1 停止使用-->出现不良反应(异常问卷)")
                 }
                 2 -> {
                     formViewModel.trachDirection(uniqueid, org_number,  "2.3 特殊情况（妊娠期、哺乳期等）")

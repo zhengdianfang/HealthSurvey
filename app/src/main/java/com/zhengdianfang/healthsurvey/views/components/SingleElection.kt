@@ -58,6 +58,10 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
             layoutParams.topMargin = this.context.resources.getDimension(R.dimen.line_margin_top).toInt()
             radioGroup.addView(radioButton)
         }
+        val lastCheckedIndex = getLastChecked(type)
+        if (lastCheckedIndex >= 0 && lastCheckedIndex < radioGroup.childCount) {
+            radioGroup.check(radioGroup.getChildAt(lastCheckedIndex).id)
+        }
         radioGroup.setOnCheckedChangeListener { groupView, checkId ->
             val indexOfChild = groupView.indexOfChild(groupView.findViewById<RadioButton>(checkId))
             if (question.options?.get(indexOfChild)?.isMore()!!) {
@@ -65,10 +69,6 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
             } else {
                 setAnswer(indexOfChild, (groupView as AppRadioGroup).type)
             }
-        }
-        val lastCheckedIndex = getLastChecked(type)
-        if (lastCheckedIndex >= 0 && lastCheckedIndex < radioGroup.childCount) {
-            radioGroup.check(radioGroup.getChildAt(lastCheckedIndex).id)
         }
     }
 

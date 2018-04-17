@@ -2,7 +2,9 @@ package com.zhengdianfang.healthsurvey.views.components
 
 import android.content.Context
 import android.graphics.Color
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
@@ -36,6 +38,17 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
         super.bindData2View(view)
         editText = view.findViewById(R.id.editText)
         editText?.setText(question.answers.answer)
+        editText?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                question.answers?.answer = p0?.toString() ?: ""
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
         if (context is MainActivity) {
             initAdapter(context)
             editText?.setOnItemClickListener { _, _, _, _ ->
@@ -61,6 +74,7 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
 
     override fun renderOptions(type: Int): View {
         val editText = AutoCompleteTextView(this.context)
+        editText.threshold = 1
         editText.setTextColor(Color.BLACK)
         editText.id = R.id.editText
         editText.setBackgroundResource(R.drawable.default_input)

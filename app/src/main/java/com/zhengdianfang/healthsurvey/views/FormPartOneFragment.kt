@@ -137,9 +137,9 @@ open class FormPartOneFragment : BaseFragment() {
                     val view = component?.render()
                     renderQuestionCustomStyle(view)
                     if (question.type == Question.AUTOCOMPLETE.toString()) {
-                        (component as ProductNameElection).bindData2View(view, { product -> fillProductCode(product) })
+                        (component as ProductNameElection).bindData2View({ product -> fillProductCode(product) })
                     } else {
-                        component.bindData2View(view)
+                        component.bindData2View()
                     }
                     formViewGroup.addView(view)
 

@@ -14,7 +14,7 @@ import com.zhengdianfang.healthsurvey.entities.Question
 /**
  * Created by dfgzheng on 05/04/2018.
  */
-class MutilElection(context: Context, question: Question) : BaseComponent(context, question) {
+class MultiElection(context: Context, question: Question) : BaseComponent(context, question) {
 
     override fun bindData2OptionsView(view: View, type: Int) {
         val lastCheckeds = getCheckedCache(question, type)
@@ -25,8 +25,10 @@ class MutilElection(context: Context, question: Question) : BaseComponent(contex
             linearLayout.orientation = LinearLayout.HORIZONTAL
             val checkBox = AppCheckBox(this.context, type)
             checkBox.isChecked = lastCheckeds.contains(index.toString())
+            this.onSelectOption?.invoke(option)
             checkBox.setOnCheckedChangeListener { view, b ->
                 setAnswer(b, index, (view as AppCheckBox).type)
+                this.onSelectOption?.invoke(option)
             }
             linearLayout.addView(checkBox)
             val textView = TextView(context)

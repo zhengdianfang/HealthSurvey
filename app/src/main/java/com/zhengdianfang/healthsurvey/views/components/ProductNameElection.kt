@@ -34,9 +34,9 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
         return true
     }
 
-    fun bindData2View(view: View, autoFill: ((product: Product) -> Unit)?) {
-        super.bindData2View(view)
-        editText = view.findViewById(R.id.editText)
+    fun bindData2View(autoFill: ((product: Product) -> Unit)?) {
+        super.bindData2View()
+        editText = rootView.findViewById(R.id.editText)
         editText?.setText(question.answers.answer)
         editText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {

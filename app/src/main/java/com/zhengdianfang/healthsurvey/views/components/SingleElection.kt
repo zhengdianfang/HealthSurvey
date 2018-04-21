@@ -61,14 +61,18 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
         val lastCheckedIndex = getLastChecked(type)
         if (lastCheckedIndex >= 0 && lastCheckedIndex < radioGroup.childCount) {
             radioGroup.check(radioGroup.getChildAt(lastCheckedIndex).id)
+            val option = question.options?.get(lastCheckedIndex)
+            this.onSelectOption?.invoke(option!!)
         }
         radioGroup.setOnCheckedChangeListener { groupView, checkId ->
             val indexOfChild = groupView.indexOfChild(groupView.findViewById<RadioButton>(checkId))
-            if (question.options?.get(indexOfChild)?.isMore()!!) {
+            val option = question.options?.get(indexOfChild)
+            if (option?.isMore()!!) {
                 alertDialog.show(indexOfChild, (groupView as AppRadioGroup).type)
             } else {
                 setAnswer(indexOfChild, (groupView as AppRadioGroup).type)
             }
+            this.onSelectOption?.invoke(option)
         }
     }
 

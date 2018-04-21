@@ -16,6 +16,7 @@ import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.Form
+import com.zhengdianfang.healthsurvey.entities.Option
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
@@ -36,6 +37,7 @@ open class SurveyFragment : FormPartOneFragment() {
     private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
     private val group_id by lazy { arguments?.getString("group_id") ?: "" }
     private var form: Form? = null
+    private val omits = mutableListOf<String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -92,21 +94,25 @@ open class SurveyFragment : FormPartOneFragment() {
             titleTextView.text = form.title
             form.subdata?.forEach { question ->
                 var component = BaseComponent.getComponent(context!!, question)
+                component?.onSelectOption = {option -> this.onSelectOption(option)}
                 if (null != component) {
                     components.add(component)
                     val view = component?.render()
                     renderQuestionCustomStyle(view)
-                    if (question.type == Question.AUTOCOMPLETE.toString()) {
-                        (component as ProductNameElection).bindData2View(view, { product -> fillProductCode(product) })
-                    } else {
-                        component.bindData2View(view)
-                    }
                     surveyViewGroup.addView(view)
 
                 }
             }
             if (form.attachment == Form.HAVE_ATTACHMENT.toString()) {
                 surveyViewGroup.addView(renderAttachment())
+            }
+
+            components.forEach { component ->
+                if (component.question.type == Question.AUTOCOMPLETE.toString()) {
+                    (component as ProductNameElection).bindData2View({ product -> fillProductCode(product) })
+                } else {
+                    component.bindData2View()
+                }
             }
         }
     }
@@ -118,6 +124,18 @@ open class SurveyFragment : FormPartOneFragment() {
         layoutParams.topMargin = margin
         layoutParams.bottomMargin = margin
         view.layoutParams = layoutParams
+    }
+
+
+    fun onSelectOption(option: Option) {
+        val omitList = option.omit.split(",").toMutableList()
+        components.forEach { component ->
+            if (omitList.contains(component.question.qid)) {
+                component.disable()
+            } else {
+                component.enable()
+            }
+        }
     }
 
 }// Required empty public constructor

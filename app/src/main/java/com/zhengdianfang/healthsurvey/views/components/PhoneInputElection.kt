@@ -56,16 +56,16 @@ class PhoneInputElection(context: Context, question: Question) : InputElection(c
         return R.layout.survey_single_question_templete_layout
     }
 
-    override fun bindData2View(view: View) {
-        view.findViewById<TextView>(R.id.questionTitleView).text =
+    override fun bindData2View() {
+        rootView.findViewById<TextView>(R.id.questionTitleView).text =
                 if(isRequried()) BaseComponent.getRequriedSpanableString(question.title) else "   ${question.title}"
-        renderDescImageView(view)
-        bindData2OptionsView(view.findViewById(R.id.frontQuestionContentView), FRONT_OPTIONS)
+        renderDescImageView(rootView)
+        bindData2OptionsView(rootView.findViewById(R.id.frontQuestionContentView), FRONT_OPTIONS)
     }
 
 
     override fun render(): View {
-        val rootView = LayoutInflater.from(context).inflate(getLayoutResId(), null)
+        rootView = LayoutInflater.from(context).inflate(getLayoutResId(), null)
         val frontQuestionContentView = rootView.findViewById<ViewGroup>(R.id.frontQuestionContentView)
         frontQuestionContentView.removeAllViews()
         frontQuestionContentView.addView(renderOptions(FRONT_OPTIONS))
@@ -81,7 +81,7 @@ class PhoneInputElection(context: Context, question: Question) : InputElection(c
 
         smsButton = view.findViewById(R.id.smsCodeButton)
         smsEditText = view.findViewById(R.id.smsCodeEditText)
-        smsButton?.getPhone = { question.answers?.answer ?: "" }
+        smsButton?.getPhone = { question.answers?.answer}
         editText = view.findViewById(R.id.editText)
         editText?.setText(question.answers.answer)
         editText?.addTextChangedListener(object : TextWatcher {

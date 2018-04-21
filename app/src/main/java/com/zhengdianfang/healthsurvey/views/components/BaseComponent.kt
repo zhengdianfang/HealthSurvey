@@ -24,6 +24,7 @@ import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Answer
 import com.zhengdianfang.healthsurvey.entities.Condition
+import com.zhengdianfang.healthsurvey.entities.Option
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.views.PerviewFragment
 import me.yokeyword.fragmentation.ISupportFragment
@@ -35,6 +36,11 @@ import org.jetbrains.anko.defaultSharedPreferences
  * Created by dfgzheng on 05/04/2018.
  */
 abstract class BaseComponent(val context: Context, val question: Question) {
+
+    protected lateinit var rootView: View
+
+    var onSelectOption: ((option: Option) -> Unit)? = null
+
     init {
         val json = context.defaultSharedPreferences.getString(question.qid, "")
         if (TextUtils.isEmpty(json).not()) {
@@ -95,9 +101,10 @@ abstract class BaseComponent(val context: Context, val question: Question) {
     }
 
 
+
     open fun render(): View {
         Log.d("BaseComponent", "render${getQuestionType()}")
-        val rootView = LayoutInflater.from(context).inflate(getLayoutResId(), null)
+        rootView = LayoutInflater.from(context).inflate(getLayoutResId(), null)
         val frontQuestionContentView = rootView.findViewById<ViewGroup>(R.id.frontQuestionContentView)
         frontQuestionContentView.removeAllViews()
         frontQuestionContentView.addView(renderOptions(FRONT_OPTIONS))
@@ -106,6 +113,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
             endQuestionContentView.removeAllViews()
             endQuestionContentView.addView(renderOptions(END_OPTIONS))
         }
+        rootView.isEnabled = false
         return rootView
     }
 
@@ -123,7 +131,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
     abstract fun bindData2OptionsView(view: View, type: Int)
 
     open fun verify(): Boolean {
-        if (isRequried()) {
+        if (isRequried() && rootView.findViewById<View>(R.id.disableMaskView).visibility == View.GONE) {
             if (TextUtils.isEmpty(question.answers.answer)) {
                 Toast.makeText(context, context.getString(R.string.please_input_x_content, question.title), Toast.LENGTH_SHORT).show()
                 return false
@@ -138,15 +146,23 @@ abstract class BaseComponent(val context: Context, val question: Question) {
         return true
     }
 
-    open fun bindData2View(view: View) {
-        view.findViewById<TextView>(R.id.questionTitleView).text =
+    open fun bindData2View() {
+        rootView.findViewById<TextView>(R.id.questionTitleView).text =
                 if(isRequried()) BaseComponent.getRequriedSpanableString(question.title) else "   ${question.title}"
-        renderDescImageView(view)
-        bindData2OptionsView(view.findViewById(R.id.frontQuestionContentView), FRONT_OPTIONS)
+        renderDescImageView(rootView)
+        bindData2OptionsView(rootView.findViewById(R.id.frontQuestionContentView), FRONT_OPTIONS)
         if (isDoubleQuestion()) {
-            val findViewById = view.findViewById<View>(R.id.endQuestionContentView)
+            val findViewById = rootView.findViewById<View>(R.id.endQuestionContentView)
             bindData2OptionsView(findViewById, END_OPTIONS)
         }
+    }
+
+    fun disable() {
+        rootView.findViewById<View>(R.id.disableMaskView).visibility = View.VISIBLE
+    }
+
+    fun enable() {
+        rootView.findViewById<View>(R.id.disableMaskView).visibility = View.GONE
     }
 
     companion object {
@@ -160,7 +176,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
                 Question.PHONE_INPUT_ELECTION -> component = PhoneInputElection(context, question)
                 Question.IDCARD_INPUT_ELECTION -> component = IdCardInputElection(context, question)
                 Question.SINGLE_ELECTION -> component = SingleElection(context, question)
-                Question.MULTI_ELECTION -> component = MutilElection(context, question)
+                Question.MULTI_ELECTION -> component = MultiElection(context, question)
                 Question.DATE -> component = DateElection(context, question)
                 Question.ADDRESS -> component = AddressElection(context, question)
                 Question.AUTOCOMPLETE -> component = ProductNameElection(context, question)

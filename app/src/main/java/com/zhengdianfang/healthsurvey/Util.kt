@@ -236,4 +236,10 @@ object Util: AnkoLogger {
         return "com.google.android.apps.photos.content" == uri.authority
     }
 
+    fun is18ByteIdCard(idCard: String): Boolean {
+        val pattern1 = Pattern.compile("^(\\d{6})(19|20)(\\d{2})(1[0-2]|0[1-9])(0[1-9]|[1-2][0-9]|3[0-1])(\\d{3})(\\d|X|x)?$") //粗略的校验
+        val matcher = pattern1.matcher(idCard)
+        return matcher.matches()
+    }
+
 }

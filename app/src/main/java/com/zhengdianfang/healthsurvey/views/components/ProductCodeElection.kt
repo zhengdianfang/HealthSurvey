@@ -22,7 +22,7 @@ class ProductCodeElection(context: Context, question: Question) : BaseComponent(
     }
 
     override fun verify(): Boolean {
-        val content = question.answers?.answer ?: ""
+        val content = question.answers?.answer
         if (isRequried() && TextUtils.isEmpty(content) ) {
             Toast.makeText(context, context.getString(R.string.please_input_x_content,question.title), Toast.LENGTH_SHORT).show()
             return false

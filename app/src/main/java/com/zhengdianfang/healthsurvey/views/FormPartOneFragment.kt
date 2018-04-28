@@ -23,11 +23,10 @@ import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.adapter.AttachmentAdapter
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
+import com.zhengdianfang.healthsurvey.views.components.CompanyNameElection
 import com.zhengdianfang.healthsurvey.views.components.ProductCodeElection
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
 import com.zhy.view.flowlayout.TagFlowLayout
-import kotlinx.android.synthetic.main.fragment_form_part_one.*
-import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.AnkoLogger
@@ -120,9 +119,12 @@ open class FormPartOneFragment : BaseFragment() {
     }
 
     protected fun fillProductCode(product: Product) {
-        val component = components.first { it.getQuestionType() == Question.AUTO_FILL }
-        if (null != component && component is ProductCodeElection) {
-            component.fill(product.code)
+        components.forEach { component ->
+            if (component.getQuestionType() == Question.AUTO_FILL) {
+                (component as ProductCodeElection).fill(product.code)
+            } else if (component.getQuestionType() == Question.COMPANY_ELECTION) {
+                (component as CompanyNameElection).fill(product.factory)
+            }
         }
     }
 

@@ -18,7 +18,6 @@ import me.yokeyword.fragmentation.SupportActivity
 import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.browse
-import org.jetbrains.anko.debug
 import org.jetbrains.anko.defaultSharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,7 +56,6 @@ class MainActivity : SupportActivity(), AnkoLogger {
             if (null != it && !it.isEmpty()) {
                 products.addAll(it)
                 defaultSharedPreferences.edit().putString(PRODUCT_SAVE_KEY, WebService.gson.toJson(it)).apply()
-                debug(products.toString())
             } else if (retryCount > 0){
                 --retryCount
                 requestProductList(productViewModel)

@@ -30,10 +30,10 @@ open class DateElection(context: Context, question: Question) : BaseComponent(co
         }
     }
 
-    private fun onDate(address: String, type: Int) {
+    private fun onDate(date: String, type: Int) {
         when(type){
-            FRONT_OPTIONS -> question.answers?.answer = address
-            END_OPTIONS -> question.answers?.answer_end = address
+            FRONT_OPTIONS -> question.answers?.answer = date
+            END_OPTIONS -> question.answers?.answer_end = date
         }
     }
 

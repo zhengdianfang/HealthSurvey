@@ -10,7 +10,6 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -103,7 +102,6 @@ abstract class BaseComponent(val context: Context, val question: Question) {
 
 
     open fun render(): View {
-        Log.d("BaseComponent", "render${getQuestionType()}")
         rootView = LayoutInflater.from(context).inflate(getLayoutResId(), null)
         val frontQuestionContentView = rootView.findViewById<ViewGroup>(R.id.frontQuestionContentView)
         frontQuestionContentView.removeAllViews()
@@ -181,6 +179,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
                 Question.ADDRESS -> component = AddressElection(context, question)
                 Question.AUTOCOMPLETE -> component = ProductNameElection(context, question)
                 Question.AUTO_FILL -> component = ProductCodeElection(context, question)
+                Question.COMPANY_ELECTION -> component = CompanyNameElection(context, question)
             }
             return component
         }

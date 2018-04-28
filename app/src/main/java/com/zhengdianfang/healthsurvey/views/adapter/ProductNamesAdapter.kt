@@ -2,6 +2,7 @@ package com.zhengdianfang.healthsurvey.views.adapter
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Filter
 
@@ -15,7 +16,11 @@ class ProductNamesAdapter(context: Context?, resource: Int, val datas: MutableLi
                     filterResults.count = 0
                     filterResults.values = arrayOf<String>()
                 } else {
-                    val res = datas?.filter { it.contains(p0!!) }
+                    val res = datas?.filter{ it->
+                         Log.d("11111", "${it.contains(p0!!) }")
+                         it.contains(p0!!)
+                    }
+                    Log.d("123123123", res?.count()?.toString() ?: "0")
                     filterResults.values = res
                     filterResults.count = res?.count() ?: 0
                 }

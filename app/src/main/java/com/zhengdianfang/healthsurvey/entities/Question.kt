@@ -25,6 +25,9 @@ class Question (
                 Condition.IDCARD_TYPE.toString() ->
                     return IDCARD_INPUT_ELECTION
             }
+            if (code.toUpperCase() == "B11") {
+               return COMPANY_ELECTION
+            }
         }
         return type.toInt()
     }
@@ -39,6 +42,7 @@ class Question (
         val ADDRESS = 7
         val PHONE_INPUT_ELECTION = 11
         val IDCARD_INPUT_ELECTION = 12
+        val COMPANY_ELECTION = 13
     }
 
 

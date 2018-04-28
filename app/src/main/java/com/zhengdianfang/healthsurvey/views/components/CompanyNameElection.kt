@@ -6,23 +6,22 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.MainActivity
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.entities.Product
 import com.zhengdianfang.healthsurvey.entities.Question
-import com.zhengdianfang.healthsurvey.views.adapter.ProductNamesAdapter
 
 /**
  * Created by dfgzheng on 05/04/2018.
  */
-class ProductNameElection(context: Context, question: Question) : BaseComponent(context, question) {
+class CompanyNameElection(context: Context, question: Question) : BaseComponent(context, question) {
 
     private var editText: AutoCompleteTextView? = null
 
     override fun getQuestionType(): Int {
-        return Question.AUTOCOMPLETE
+        return Question.COMPANY_ELECTION
     }
 
     override fun verify(): Boolean {
@@ -34,7 +33,7 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
         return true
     }
 
-    fun bindData2View(autoFill: ((product: Product) -> Unit)?) {
+    override fun bindData2View() {
         super.bindData2View()
         editText = rootView.findViewById(R.id.editText)
         editText?.setText(question.answers.answer)
@@ -54,17 +53,13 @@ class ProductNameElection(context: Context, question: Question) : BaseComponent(
             editText?.setOnItemClickListener { _, _, _, _ ->
                 val input = editText?.text.toString()
                 question.answers?.answer = input
-                val product = context.products.first{ it.name == input }
-                if (product != null) {
-                    autoFill?.invoke(product)
-                }
             }
         }
 
     }
 
     private fun initAdapter(context: MainActivity) {
-        val adapter = ProductNamesAdapter(context, android.R.layout.simple_list_item_1, context.products.map { it.name }.filter { !TextUtils.isEmpty(it) }.toMutableList())
+        val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, context.products.map { it.factory }.filter { !TextUtils.isEmpty(it) }.toMutableList())
         editText?.setAdapter(adapter)
     }
 

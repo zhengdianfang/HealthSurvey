@@ -37,7 +37,7 @@ open class SurveyFragment : FormPartOneFragment() {
     private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
     private val group_id by lazy { arguments?.getString("group_id") ?: "" }
     private var form: Form? = null
-    private val omits = mutableListOf<String>()
+    private val omits = mutableMapOf<String, String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -94,7 +94,7 @@ open class SurveyFragment : FormPartOneFragment() {
             titleTextView.text = form.title
             form.subdata?.forEach { question ->
                 var component = BaseComponent.getComponent(context!!, question)
-                component?.onSelectOption = {option -> this.onSelectOption(option)}
+                component?.onSelectOption = {qid, option -> this.onSelectOption(qid, option)}
                 if (null != component) {
                     components.add(component)
                     val view = component?.render()
@@ -127,10 +127,11 @@ open class SurveyFragment : FormPartOneFragment() {
     }
 
 
-    fun onSelectOption(option: Option) {
-        val omitList = option.omit.split(",").toMutableList()
+    fun onSelectOption(qid: String, option: Option) {
+        omits[qid] = option.omit
+        val split = omits.values.reduce { acc, s -> acc.plus(s) }.split(",")
         components.forEach { component ->
-            if (omitList.contains(component.question.qid)) {
+            if (split.contains(component.question.qid)) {
                 component.disable()
             } else {
                 component.enable()

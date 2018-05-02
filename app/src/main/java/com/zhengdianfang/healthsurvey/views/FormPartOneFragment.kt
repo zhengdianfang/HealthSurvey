@@ -27,6 +27,8 @@ import com.zhengdianfang.healthsurvey.views.components.CompanyNameElection
 import com.zhengdianfang.healthsurvey.views.components.ProductCodeElection
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
 import com.zhy.view.flowlayout.TagFlowLayout
+import kotlinx.android.synthetic.main.fragment_form_part_one.*
+import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.AnkoLogger

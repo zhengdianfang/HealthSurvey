@@ -44,6 +44,9 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
                 })
         dialog.setTitle(context.resources.getString(R.string.please_input_other_reason))
         dialog.setView(editText)
+        dialog.setOnDismissListener({
+            editText.setText("")
+        })
         dialog
     }
 
@@ -79,11 +82,24 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
     private fun getLastChecked(type: Int): Int {
         if (type == FRONT_OPTIONS) {
             if (TextUtils.isEmpty(question.answers.answer).not()) {
-                return question.answers.answer.toInt()
+                var index = 0
+                try{
+                    index = question.answers.answer.toInt()
+                }catch (e: Exception){
+                     question.answers.answer = "0"
+                }
+                return index
             }
         } else {
             if (TextUtils.isEmpty(question.answers.answer_end).not()) {
-                return question.answers.answer_end.toInt()
+                var index = 0
+                try{
+                    index = question.answers.answer_end.toInt()
+                }catch (e: Exception){
+
+                    question.answers.answer_end = "0"
+                }
+                return index
             }
         }
         return -1

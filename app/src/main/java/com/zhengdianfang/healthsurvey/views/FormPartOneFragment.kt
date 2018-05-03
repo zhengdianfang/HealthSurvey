@@ -27,8 +27,6 @@ import com.zhengdianfang.healthsurvey.views.components.CompanyNameElection
 import com.zhengdianfang.healthsurvey.views.components.ProductCodeElection
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
 import com.zhy.view.flowlayout.TagFlowLayout
-import kotlinx.android.synthetic.main.fragment_form_part_one.*
-import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.AnkoLogger
@@ -47,7 +45,7 @@ open class FormPartOneFragment : BaseFragment() {
 
     private val MAX_ATTACHMENT_COUNT = 9
 
-    protected val components: MutableList<BaseComponent> = arrayListOf()
+    protected val components: MutableList<BaseComponent> = mutableListOf()
     private val formPartOneViewModel by lazy { ViewModelProviders.of(this) .get(FormViewModel::class.java) }
     private var form: Form? = null
     protected var phoneNumber: String = ""

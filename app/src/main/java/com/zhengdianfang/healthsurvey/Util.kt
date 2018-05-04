@@ -14,6 +14,7 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.FileProvider
+import android.text.TextUtils
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Question
 import org.jetbrains.anko.AnkoLogger
@@ -52,6 +53,9 @@ object Util: AnkoLogger {
 
     fun getUnquieid(phone: String): String {
         val time = System.currentTimeMillis().toString().substring(0, 10)
+        if (TextUtils.isEmpty(phone)) {
+            return Des4.encode("00000000000$time")
+        }
         return Des4.encode(phone + time)
     }
 

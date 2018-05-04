@@ -71,7 +71,7 @@ open class FormPartOneFragment : BaseFragment() {
         nextStepButton.setOnClickListener {
             Util.saveQuestionCache(context, form?.subdata)
             if (verifyAnswers()) {
-                if (null != this.form && !TextUtils.isEmpty(phoneNumber)) {
+                if (null != this.form) {
                     form?.attachment_files = attachments.toTypedArray()
                     showDialog()
                     formPartOneViewModel.submitUserInfo(Util.getUnquieid(phoneNumber) , this.form!!, this.org_number).observe(this, Observer {

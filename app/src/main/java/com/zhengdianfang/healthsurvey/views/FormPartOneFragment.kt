@@ -16,10 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
-import com.zhengdianfang.healthsurvey.entities.Condition
-import com.zhengdianfang.healthsurvey.entities.Form
-import com.zhengdianfang.healthsurvey.entities.Product
-import com.zhengdianfang.healthsurvey.entities.Question
+import com.zhengdianfang.healthsurvey.entities.*
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.adapter.AttachmentAdapter
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
@@ -27,6 +24,8 @@ import com.zhengdianfang.healthsurvey.views.components.CompanyNameElection
 import com.zhengdianfang.healthsurvey.views.components.ProductCodeElection
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
 import com.zhy.view.flowlayout.TagFlowLayout
+import kotlinx.android.synthetic.main.fragment_form_part_one.*
+import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.AnkoLogger
@@ -44,7 +43,7 @@ import java.io.File
 open class FormPartOneFragment : BaseFragment() {
 
     private val MAX_ATTACHMENT_COUNT = 9
-
+    private val omits = mutableMapOf<String, String>()
     protected val components: MutableList<BaseComponent> = mutableListOf()
     private val formPartOneViewModel by lazy { ViewModelProviders.of(this) .get(FormViewModel::class.java) }
     private var form: Form? = null
@@ -134,6 +133,9 @@ open class FormPartOneFragment : BaseFragment() {
             titleTextView.text = form.title
             form.subdata?.forEach { question ->
                 var component = BaseComponent.getComponent(context!!, question)
+                component?.onSelectOption = {qid, option ->
+                    this.onSelectOption(qid, option)
+                }
                 if (null != component) {
                     components.add(component)
                     val view = component?.render()
@@ -245,6 +247,18 @@ open class FormPartOneFragment : BaseFragment() {
 
 
         return attachmentView
+    }
+
+    protected fun onSelectOption(qid: String, option: Option) {
+        omits[qid] = option.omit
+        val split = omits.values.reduce { acc, s -> acc.plus(s).plus(",") }.split(",")
+        components.forEach { component ->
+            if (split.contains(component.question.qid)) {
+                component.disable()
+            } else {
+                component.enable()
+            }
+        }
     }
 
 }// Required empty public constructor

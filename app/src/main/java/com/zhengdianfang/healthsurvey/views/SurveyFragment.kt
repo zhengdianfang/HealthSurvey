@@ -21,6 +21,8 @@ import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
 import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
+import kotlinx.android.synthetic.main.fragment_survey.*
+import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 
@@ -35,7 +37,6 @@ open class SurveyFragment : FormPartOneFragment() {
     private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
     private val group_id by lazy { arguments?.getString("group_id") ?: "" }
     private var form: Form? = null
-    private val omits = mutableMapOf<String, String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -92,7 +93,9 @@ open class SurveyFragment : FormPartOneFragment() {
             titleTextView.text = form.title
             form.subdata?.forEach { question ->
                 var component = BaseComponent.getComponent(context!!, question)
-                component?.onSelectOption = {qid, option -> this.onSelectOption(qid, option)}
+                component?.onSelectOption = {qid, option ->
+                    this.onSelectOption(qid, option)
+                }
                 if (null != component) {
                     components.add(component)
                     val view = component?.render()
@@ -125,16 +128,5 @@ open class SurveyFragment : FormPartOneFragment() {
     }
 
 
-    fun onSelectOption(qid: String, option: Option) {
-        omits[qid] = option.omit
-        val split = omits.values.reduce { acc, s -> acc.plus(s).plus(",") }.split(",")
-        components.forEach { component ->
-            if (split.contains(component.question.qid)) {
-                component.disable()
-            } else {
-                component.enable()
-            }
-        }
-    }
 
 }// Required empty public constructor

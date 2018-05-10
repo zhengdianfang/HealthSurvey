@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.*
@@ -73,11 +74,12 @@ open class FormPartOneFragment : BaseFragment() {
                 if (null != this.form) {
                     form?.attachment_files = attachments.toTypedArray()
                     showDialog()
-                    formPartOneViewModel.submitUserInfo(Util.getUnquieid(phoneNumber) , this.form!!, this.org_number).observe(this, Observer {
+                    createUnqueId(phoneNumber)
+                    formPartOneViewModel.submitUserInfo(getUnqueId(), this.form!!, this.org_number).observe(this, Observer {
                         hideDialog()
                         if (it != false) {
                             nextFragment()
-                            formPartOneViewModel.uploadDeviceInfo(Util.getUnquieid(phoneNumber))
+                            formPartOneViewModel.uploadDeviceInfo(getUnqueId())
                         } else {
                             Toast.makeText(context, getString(R.string.save_fail), Toast.LENGTH_SHORT).show()
                         }
@@ -94,7 +96,6 @@ open class FormPartOneFragment : BaseFragment() {
 
     open fun nextFragment() {
         val bundle = Bundle()
-        bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
         bundle.putString("org_number", org_number)
         start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, bundle) as ISupportFragment)
         if (TextUtils.isEmpty(this.form?.prize_url).not()) {

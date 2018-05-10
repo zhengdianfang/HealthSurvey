@@ -1,6 +1,7 @@
 package com.zhengdianfang.healthsurvey
 
 import android.app.Application
+import android.util.Log
 import me.yokeyword.fragmentation.Fragmentation
 
 
@@ -10,6 +11,7 @@ import me.yokeyword.fragmentation.Fragmentation
 class AppApplication: Application() {
 
     val surveyStatusCache = mutableMapOf<String, Boolean>()
+    private var gloalUnquieId = ""
 
     override fun onCreate() {
         super.onCreate()
@@ -25,5 +27,32 @@ class AppApplication: Application() {
     override fun onTerminate() {
         super.onTerminate()
         surveyStatusCache.clear()
+    }
+
+    fun createUnqueId(phone: String): String {
+        val time = System.currentTimeMillis().toString().substring(0, 10)
+        gloalUnquieId = if (phone.isNullOrBlank()) {
+            "00000000000$time"
+        } else {
+            phone + time
+        }
+        return gloalUnquieId
+    }
+    fun unquieIdIncrease(): String {
+        val split = gloalUnquieId.split("_")
+        gloalUnquieId = if (split.count() == 1) {
+            "${split.first()}_1"
+        } else {
+            "${split.first()}_${split.last().toInt() + 1}"
+        }
+        return gloalUnquieId
+    }
+    fun resetUnquieId() {
+        gloalUnquieId = ""
+    }
+
+    fun getUnqueId(): String {
+        Log.d("Util", "gloalUnquieId : $gloalUnquieId")
+        return Des4.encode(gloalUnquieId)
     }
 }

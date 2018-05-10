@@ -1,6 +1,9 @@
 package com.zhengdianfang.healthsurvey.views
 
 import android.os.Build
+import android.util.Log
+import com.zhengdianfang.healthsurvey.AppApplication
+import com.zhengdianfang.healthsurvey.Des4
 import com.zhengdianfang.healthsurvey.R
 import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.AnkoLogger
@@ -33,5 +36,19 @@ open class BaseFragment: SupportFragment(), AnkoLogger {
             requestPermissions(permissions, REQUEST_PERMISSIONS)
             this.permissionCallback = callback
         }
+    }
+
+    fun createUnqueId(phone: String) {
+        (context?.applicationContext as AppApplication).createUnqueId(phone)
+    }
+    fun unquieIdIncrease(): String {
+        return (context?.applicationContext as AppApplication).unquieIdIncrease()
+    }
+    fun resetUnquieId() {
+        (context?.applicationContext as AppApplication).resetUnquieId()
+    }
+
+    fun getUnqueId(): String {
+        return (context?.applicationContext as AppApplication).getUnqueId()
     }
 }

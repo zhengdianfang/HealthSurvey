@@ -16,7 +16,6 @@ import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.Form
-import com.zhengdianfang.healthsurvey.entities.Option
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
@@ -34,8 +33,8 @@ open class SurveyFragment : FormPartOneFragment() {
 
     private val formViewModel by lazy { ViewModelProviders.of(this).get(FormViewModel::class.java) }
     private val org_number by lazy { arguments?.getString("org_number") ?: "" }
-    private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
     private val group_id by lazy { arguments?.getString("group_id") ?: "" }
+    private val increase by lazy { arguments?.getBoolean("increase", false) ?: false }
     private var form: Form? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +55,7 @@ open class SurveyFragment : FormPartOneFragment() {
                 (context?.applicationContext as AppApplication).surveyStatusCache[this.form?.id!!] = true
                 this.form?.attachment_files = attachments.toTypedArray()
                 showDialog()
-                formViewModel.submitSurveyForm(this.form!!, this.uniqueid, this.org_number).observe(this, Observer {
+                formViewModel.submitSurveyForm(this.form!!, getUnqueId(), this.org_number).observe(this, Observer {
                     hideDialog()
                     if (it != false) {
                         nextFragment()
@@ -73,7 +72,6 @@ open class SurveyFragment : FormPartOneFragment() {
         pop()
         if (TextUtils.isEmpty(this.form?.prize_url).not()) {
             val bundle = Bundle()
-            bundle.putString("uniqueid", Util.getUnquieid(phoneNumber))
             bundle.putString("org_number", org_number)
             bundle.putString("url", this.form?.prize_url)
             start(SupportFragment.instantiate(context, PrizeFragment::class.java.name, bundle) as ISupportFragment)
@@ -81,7 +79,7 @@ open class SurveyFragment : FormPartOneFragment() {
     }
 
     override fun initDatas() {
-        formViewModel.getSurveyForm(uniqueid, org_number, group_id).observe(this, Observer {
+        formViewModel.getSurveyForm(getUnqueId(), org_number, group_id).observe(this, Observer {
             this.form = it
             initViews(it)
         })
@@ -98,7 +96,7 @@ open class SurveyFragment : FormPartOneFragment() {
                 }
                 if (null != component) {
                     components.add(component)
-                    val view = component?.render()
+                    val view = component.render()
                     renderQuestionCustomStyle(view)
                     surveyViewGroup.addView(view)
 

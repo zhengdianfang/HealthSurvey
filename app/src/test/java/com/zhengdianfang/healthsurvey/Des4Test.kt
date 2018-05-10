@@ -14,7 +14,7 @@ class Des4Test{
 
     @Test
     fun testDecode() {
-        val decode = Des4.decode("34xE8SeOPF6R3DTb0tZnBw==")
+        val decode = Des4.decode("tuR14AMYAglNrRQ04SHJqXeBnB2B0hJr==")
         println(decode)
     }
 }

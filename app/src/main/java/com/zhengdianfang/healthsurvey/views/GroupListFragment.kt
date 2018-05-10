@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
+import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.Group
 import com.zhengdianfang.healthsurvey.entities.GroupChild
 import com.zhengdianfang.healthsurvey.entities.Part
@@ -35,17 +36,19 @@ class GroupListFragment : BaseFragment() {
     private val adapter = GroupListAdapter(groups, { onGroupItemClick(it) })
     private val nextbutton by lazy { LayoutInflater.from(context).inflate(R.layout.next_button_layout, null) as ViewGroup }
     private val org_number by lazy { arguments?.getString("org_number") ?: "" }
-    private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
     private val partType by lazy { arguments?.getInt("partType") ?: Part.BASE }
     private var part: Part? = null
 
     private val goOnDialog by lazy {
         val alertDialog = AlertDialog.Builder(context,  android.R.style.Theme_Material_Light_Dialog_MinWidth)
                 .setPositiveButton(getString(R.string.goon_reply), { _, _ ->
+                    arguments?.putBoolean("increase", true)
+                    unquieIdIncrease()
                     start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
                 })
                 .setNegativeButton(getString(R.string.finish), { _, _ ->
-                    formViewModel.surveyFinish(uniqueid, org_number)
+                    resetUnquieId()
+                    formViewModel.surveyFinish(getUnqueId(), org_number)
                     start(SupportFragment.instantiate(context, FinishFragment::class.java.name, arguments) as ISupportFragment)
                 })
                 .setMessage(R.string.goon_dailog_content)
@@ -68,11 +71,8 @@ class GroupListFragment : BaseFragment() {
     }
 
     private fun onGroupItemClick(groupChild: GroupChild) {
-        val bundle = Bundle()
-        bundle.putString("org_number", this.org_number)
-        bundle.putString("uniqueid", this.uniqueid)
-        bundle.putString("group_id", groupChild.group_id)
-        start(SupportFragment.instantiate(context, SurveyFragment::class.java.name, bundle) as ISupportFragment)
+        arguments?.putString("group_id", groupChild.group_id)
+        start(SupportFragment.instantiate(context, SurveyFragment::class.java.name, arguments) as ISupportFragment)
     }
 
     private fun initViews() {
@@ -116,7 +116,7 @@ class GroupListFragment : BaseFragment() {
 
     private fun initDatas() {
         showDialog()
-        groupListViewModel.getQuestionGroupList(this.uniqueid, this.org_number).observe(this, Observer {
+        groupListViewModel.getQuestionGroupList(getUnqueId(), this.org_number).observe(this, Observer {
             hideDialog()
             when(partType) {
                 Part.BASE -> part = it?.base

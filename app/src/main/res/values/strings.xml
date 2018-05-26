@@ -60,4 +60,10 @@
     <string name="upload_success">上传成功</string>
     <string name="upload_failure">上传失败</string>
     <string name="upgradel">更新</string>
+    <string name="price_unreasonable">价格不合理</string>
+    <string name="no_enough_effect">效果不明显</string>
+    <string name="bad_usage_habit">服用方式不习惯</string>
+    <string name="outsite_sales">上门销售</string>
+    <string name="other">其他</string>
+    <string name="advice_fill">推荐填写</string>
 </resources>

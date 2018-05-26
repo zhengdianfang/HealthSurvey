@@ -41,6 +41,7 @@ class FormAskFragment : BaseFragment() {
         }
         yestv.setOnClickListener {
             arguments?.putInt("partType", Part.INUSE)
+            unquieIdIncrease()
             formViewModel.trachDirection(uniqueid, org_number, "1 仍在使用(正常问卷)")
             start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
 

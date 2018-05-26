@@ -136,4 +136,9 @@ class GroupListFragment : BaseFragment() {
         adapter.notifyDataSetChanged()
     }
 
+    fun update() {
+        adapter.notifyDataSetChanged()
+    }
+
+
 }// Required empty public constructor

@@ -15,7 +15,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.AppApplication
+import com.zhengdianfang.healthsurvey.MainActivity
 import com.zhengdianfang.healthsurvey.R
+import com.zhengdianfang.healthsurvey.R.id.titleTextView
 import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.*
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
@@ -250,8 +252,9 @@ open class FormPartOneFragment : BaseFragment() {
         return attachmentView
     }
 
-    protected fun onSelectOption(qid: String, option: Option) {
+    protected open fun onSelectOption(qid: String, option: Option) {
         omits[qid] = option.omit
+        (activity as MainActivity).addAdvice(qid, option.advise)
         val split = omits.values.reduce { acc, s -> acc.plus(s).plus(",") }.split(",")
         components.forEach { component ->
             if (split.contains(component.question.qid)) {

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.zhengdianfang.healthsurvey.AppApplication
+import com.zhengdianfang.healthsurvey.MainActivity
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.entities.Group
 import com.zhengdianfang.healthsurvey.entities.GroupChild
@@ -33,11 +34,16 @@ class GroupListAdapter(data: MutableList<Group>?, private val onGroupItemClick: 
             }
             groupView.findViewById<TextView>(R.id.formTitleTextView).text =
                     if(groupChild?.isRequired()) BaseComponent.getRequriedSpanableString(groupChild?.group_name) else "   ${groupChild?.group_name}"
+
+            val adviceTextView = groupView?.findViewById<TextView>(R.id.adviceTextView)
+            val mainActivity = helper?.itemView?.context as MainActivity
+            if (mainActivity != null) {
+                adviceTextView?.visibility = if (mainActivity.isAdvice(groupChild.group_id))  View.VISIBLE else View.INVISIBLE
+            } else {
+                adviceTextView?.visibility = View.INVISIBLE
+            }
             viewGroup?.addView(groupView)
-
         }
-
-
     }
 
     fun renderStatus(view: View, id: String) {

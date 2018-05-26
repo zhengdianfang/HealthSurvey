@@ -13,9 +13,11 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.AppApplication
+import com.zhengdianfang.healthsurvey.MainActivity
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.Form
+import com.zhengdianfang.healthsurvey.entities.Option
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.components.BaseComponent
@@ -124,7 +126,5 @@ open class SurveyFragment : FormPartOneFragment() {
         layoutParams.bottomMargin = margin
         view.layoutParams = layoutParams
     }
-
-
 
 }// Required empty public constructor

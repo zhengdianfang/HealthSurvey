@@ -4,6 +4,7 @@ package com.zhengdianfang.healthsurvey.views
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -17,6 +18,7 @@ import android.widget.RadioButton
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.entities.Part
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
+import com.zhengdianfang.healthsurvey.views.components.NotSatisfiedAlertDialog
 import kotlinx.android.synthetic.main.fragment_no_use.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
@@ -33,6 +35,23 @@ class NoUseFragment : BaseFragment() {
     private var index = -1
     private val org_number by lazy { arguments?.getString("org_number") ?: "" }
     private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
+    private val notSatisfiedAlertDialog by lazy {
+        val dialog= NotSatisfiedAlertDialog(context, android.R.style.Theme_Material_Light_Dialog_MinWidth)
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), {dialogInterface, _ -> dialogInterface.dismiss() })
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confrim), {dialogInterface, _ ->
+            val radioCheckedIndex = (dialogInterface as NotSatisfiedAlertDialog).getRadioCheckedIndex()
+            when (radioCheckedIndex) {
+                0 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.1 停止使用-->对产品不满意-->价格不合理")
+                1 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.2 停止使用-->对产品不满意-->效果不明显")
+                2 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.3 停止使用-->对产品不满意-->服用方式不习惯")
+                3 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.4 停止使用-->对产品不满意-->上门销售")
+                4 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.5 停止使用-->对产品不满意-->其他")
+            }
+            start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
+            dialogInterface.dismiss()
+        })
+       dialog
+    }
 
     private val editText by lazy {
         val editText = EditText(context)
@@ -74,16 +93,7 @@ class NoUseFragment : BaseFragment() {
             this.index = groupView.indexOfChild(groupView.findViewById<RadioButton>(checkId))
             when(this.index) {
                 1 -> {
-                    selector("", mutableListOf("价格不合理", "效果不明显", "服用方式不习惯", "上门销售", "其他"), { _, index ->
-                        when (index) {
-                            0 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.1 停止使用-->对产品不满意-->价格不合理")
-                            1 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.2 停止使用-->对产品不满意-->效果不明显")
-                            2 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.3 停止使用-->对产品不满意-->服用方式不习惯")
-                            3 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.4 停止使用-->对产品不满意-->上门销售")
-                            4 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.5 停止使用-->对产品不满意-->其他")
-                        }
-                        start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
-                    })
+                    notSatisfiedAlertDialog.show()
                 }
                 3 -> {
                     alertDialog.show()

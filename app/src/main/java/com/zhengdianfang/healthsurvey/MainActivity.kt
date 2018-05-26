@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import com.google.gson.reflect.TypeToken
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Product
@@ -12,6 +13,7 @@ import com.zhengdianfang.healthsurvey.entities.Response
 import com.zhengdianfang.healthsurvey.entities.Version
 import com.zhengdianfang.healthsurvey.repository.AppRepository
 import com.zhengdianfang.healthsurvey.viewmodel.ProductViewModel
+import com.zhengdianfang.healthsurvey.views.GroupListFragment
 import com.zhengdianfang.healthsurvey.views.MainFragment
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportActivity
@@ -36,6 +38,7 @@ class MainActivity : SupportActivity(), AnkoLogger {
     private val appRepository by lazy { AppRepository() }
     private val PRODUCT_SAVE_KEY = "product_save_key"
     private var retryCount = 3
+    private val advices = hashMapOf<String, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,20 @@ class MainActivity : SupportActivity(), AnkoLogger {
         requestProductList(productViewModel)
 
         checkUpdate()
+    }
+
+    fun addAdvice(optionId: String, adviceStr: String) {
+        advices[optionId] = adviceStr
+        findFragment(GroupListFragment::class.java).update()
+    }
+
+    fun isAdvice(groupId: String): Boolean {
+        val groupIds = arrayListOf<String>()
+        advices.values.forEach { groupIdStr ->
+           groupIds.addAll(groupIdStr.split(","))
+        }
+        Log.d("advicelist", groupIds.toString())
+        return groupIds.contains(groupId)
     }
 
     private fun requestProductList(productViewModel: ProductViewModel) {
@@ -79,13 +96,13 @@ class MainActivity : SupportActivity(), AnkoLogger {
 
     private fun alertUpdateDialog(version: Version?) {
         if (version != null) {
-            if (version.newversion != packageManager.getPackageInfo(packageName, 0).versionName) {
+            if (version.newversion > packageManager.getPackageInfo(packageName, 0).versionName) {
                 val alertDialog = AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_MinWidth)
                         .setPositiveButton(getString(R.string.upgradel), { _, _ ->
                             browse(version?.android_url)
                             System.exit(-1)
                         })
-                        .setMessage(R.string.goon_dailog_content)
+                        .setMessage(version?.updateInfos)
                         .create()
 
                 if (version.type != Version.MUST) {

@@ -48,7 +48,7 @@ class AppApplication: Application() {
         return gloalUnquieId
     }
     fun resetUnquieId() {
-        gloalUnquieId = ""
+        gloalUnquieId = gloalUnquieId.split("_").first()
     }
 
     fun getUnqueId(): String {

@@ -58,8 +58,11 @@ class MultiElection(context: Context, question: Question) : BaseComponent(contex
             val linearLayout = LinearLayout(context)
             linearLayout.orientation = LinearLayout.HORIZONTAL
             val checkBox = AppCheckBox(this.context, type)
-            checkBox.isChecked = lastCheckeds.contains(index.toString())
-            this.onSelectOption?.invoke(question.qid, option)
+            val isChecked = lastCheckeds.contains(index.toString())
+            if (isChecked) {
+                checkBox.isChecked = isChecked
+                this.onSelectOption?.invoke(question.qid, option)
+            }
             checkBox.setOnCheckedChangeListener { view, b ->
                 this.onSelectOption?.invoke(question.qid, option)
                 if (option?.isMore()!! && b) {

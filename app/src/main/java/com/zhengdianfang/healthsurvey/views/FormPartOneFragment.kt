@@ -136,8 +136,8 @@ open class FormPartOneFragment : BaseFragment() {
             titleTextView.text = form.title
             form.subdata?.forEach { question ->
                 var component = BaseComponent.getComponent(context!!, question)
-                component?.onSelectOption = {qid, option ->
-                    this.onSelectOption(qid, option)
+                component?.onSelectOption = {question, option, isChecked ->
+                    this.onSelectOption(question, option, isChecked)
                 }
                 if (null != component) {
                     components.add(component)
@@ -252,9 +252,9 @@ open class FormPartOneFragment : BaseFragment() {
         return attachmentView
     }
 
-    protected open fun onSelectOption(qid: String, option: Option) {
-        omits[qid] = option.omit
-        (activity as MainActivity).addAdvice(qid, option.advise)
+    protected open fun onSelectOption(question: Question, option: Option, isChecked: Boolean) {
+        omits[question.qid] = option.omit
+        (activity as MainActivity).addAdvice(question, option.advise, isChecked)
         val split = omits.values.reduce { acc, s -> acc.plus(s).plus(",") }.split(",")
         components.forEach { component ->
             if (split.contains(component.question.qid)) {

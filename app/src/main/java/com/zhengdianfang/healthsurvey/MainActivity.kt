@@ -9,6 +9,7 @@ import android.util.Log
 import com.google.gson.reflect.TypeToken
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Product
+import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.entities.Response
 import com.zhengdianfang.healthsurvey.entities.Version
 import com.zhengdianfang.healthsurvey.repository.AppRepository
@@ -53,8 +54,16 @@ class MainActivity : SupportActivity(), AnkoLogger {
         checkUpdate()
     }
 
-    fun addAdvice(optionId: String, adviceStr: String) {
-        advices[optionId] = adviceStr
+    fun addAdvice(question: Question, adviceStr: String, isChecked: Boolean) {
+        if (question.type ==  Question.SINGLE_ELECTION.toString()) {
+            advices[question.qid] = adviceStr
+        } else if (question.type == Question.MULTI_ELECTION.toString()) {
+            if (isChecked) {
+                advices[question.qid] = advices[question.qid] + "," + adviceStr
+            } else {
+                advices[question.qid] = advices[question.qid]?.replace(adviceStr, "") ?: ""
+            }
+        }
         findFragment(GroupListFragment::class.java).update()
     }
 

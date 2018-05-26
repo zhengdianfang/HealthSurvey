@@ -61,10 +61,10 @@ class MultiElection(context: Context, question: Question) : BaseComponent(contex
             val isChecked = lastCheckeds.contains(index.toString())
             if (isChecked) {
                 checkBox.isChecked = isChecked
-                this.onSelectOption?.invoke(question.qid, option)
+                this.onSelectOption?.invoke(question, option, isChecked)
             }
             checkBox.setOnCheckedChangeListener { view, b ->
-                this.onSelectOption?.invoke(question.qid, option)
+                this.onSelectOption?.invoke(question, option, b)
                 if (option?.isMore()!! && b) {
                     alertDialog.show(index, (view as AppCheckBox).type)
                 } else {

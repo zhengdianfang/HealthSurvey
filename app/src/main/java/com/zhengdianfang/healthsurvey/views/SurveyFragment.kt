@@ -93,8 +93,8 @@ open class SurveyFragment : FormPartOneFragment() {
             titleTextView.text = form.title
             form.subdata?.forEach { question ->
                 var component = BaseComponent.getComponent(context!!, question)
-                component?.onSelectOption = {qid, option ->
-                    this.onSelectOption(qid, option)
+                component?.onSelectOption = {question, option, isChecked ->
+                    this.onSelectOption(question, option, isChecked)
                 }
                 if (null != component) {
                     components.add(component)

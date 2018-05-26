@@ -38,7 +38,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
 
     protected lateinit var rootView: View
 
-    var onSelectOption: ((qid: String, option: Option) -> Unit)? = null
+    var onSelectOption: ((question: Question, option: Option, isChecked: Boolean) -> Unit)? = null
 
     init {
         val json = context.defaultSharedPreferences.getString(question.qid, "")

@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.gson.reflect.TypeToken
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Product
@@ -41,6 +42,7 @@ class MainActivity : SupportActivity(), AnkoLogger {
     private var retryCount = 3
     private val advices = hashMapOf<String, String>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,7 +66,7 @@ class MainActivity : SupportActivity(), AnkoLogger {
                 advices[question.qid] = advices[question.qid]?.replace(adviceStr, "") ?: ""
             }
         }
-        findFragment(GroupListFragment::class.java).update()
+        findFragment(GroupListFragment::class.java)?.update()
     }
 
     fun isAdvice(groupId: String): Boolean {

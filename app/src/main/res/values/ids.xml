@@ -5,4 +5,5 @@
     <item name="dateTextView" type="id" />
     <item name="addressTextView" type="id" />
     <item name="editText" type="id" />
+    <item name="funcSpinner" type="id" />
 </resources>

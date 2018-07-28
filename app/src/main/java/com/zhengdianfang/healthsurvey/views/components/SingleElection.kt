@@ -31,22 +31,22 @@ class SingleElection(context: Context, question: Question) : BaseComponent(conte
 
     private val alertDialog by lazy {
         val dialog = SingleElectionAlertDialog(context, android.R.style.Theme_Material_Light_Dialog_MinWidth)
-        dialog.setButton(Dialog.BUTTON_POSITIVE, context.resources.getString(R.string.confrim), { dialog, _ ->
+        dialog.setButton(Dialog.BUTTON_POSITIVE, context.resources.getString(R.string.confrim)) { dialog, _ ->
 
-                    val content = editText.text.toString()
-                    if (TextUtils.isEmpty(content).not()) {
-                        val singleElectionAlertDialog = dialog as SingleElectionAlertDialog
-                        setAnswer(singleElectionAlertDialog.radioIndex, singleElectionAlertDialog.type, editText.text.toString())
-                    }
-                })
-        dialog.setButton(Dialog.BUTTON_NEGATIVE, context.getString( R.string.cancel), { _, _ ->
+            val content = editText.text.toString()
+            if (TextUtils.isEmpty(content).not()) {
+                val singleElectionAlertDialog = dialog as SingleElectionAlertDialog
+                setAnswer(singleElectionAlertDialog.radioIndex, singleElectionAlertDialog.type, editText.text.toString())
+            }
+        }
+        dialog.setButton(Dialog.BUTTON_NEGATIVE, context.getString( R.string.cancel)) { _, _ ->
             dialog.dismiss()
-                })
+        }
         dialog.setTitle(context.resources.getString(R.string.please_input_other_reason))
         dialog.setView(editText)
-        dialog.setOnDismissListener({
+        dialog.setOnDismissListener {
             editText.setText("")
-        })
+        }
         dialog
     }
 

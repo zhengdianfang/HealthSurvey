@@ -28,6 +28,9 @@ class Question (
             if (code.toUpperCase() == "B11") {
                return COMPANY_ELECTION
             }
+            if (code.toUpperCase() == "B_V2_GX") {
+                return FUNC_ELECTION
+            }
         }
         return type.toInt()
     }
@@ -43,6 +46,7 @@ class Question (
         val PHONE_INPUT_ELECTION = 11
         val IDCARD_INPUT_ELECTION = 12
         val COMPANY_ELECTION = 13
+        val FUNC_ELECTION = 14
     }
 
 

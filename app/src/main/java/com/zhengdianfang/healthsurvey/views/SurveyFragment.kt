@@ -36,7 +36,6 @@ open class SurveyFragment : FormPartOneFragment() {
     private val formViewModel by lazy { ViewModelProviders.of(this).get(FormViewModel::class.java) }
     private val org_number by lazy { arguments?.getString("org_number") ?: "" }
     private val group_id by lazy { arguments?.getString("group_id") ?: "" }
-    private val increase by lazy { arguments?.getBoolean("increase", false) ?: false }
     private var form: Form? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -110,7 +109,7 @@ open class SurveyFragment : FormPartOneFragment() {
 
             components.forEach { component ->
                 if (component.question.type == Question.AUTOCOMPLETE.toString()) {
-                    (component as ProductNameElection).bindData2View({ product -> fillProductCode(product) })
+                    (component as ProductNameElection).bindData2View { product -> fillProductCode(product) }
                 } else {
                     component.bindData2View()
                 }

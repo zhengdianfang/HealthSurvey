@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="func27_option">
+       <item>增强免疫力</item>
+       <item>辅助降血脂</item>
+       <item>辅助降血糖</item>
+       <item>抗氧化</item>
+       <item>辅助改善记忆力</item>
+       <item>缓解视疲劳</item>
+       <item>促进排铅</item>
+       <item>清咽功能</item>
+       <item>辅助降血压</item>
+       <item>改善睡眠</item>
+       <item>促进泌乳</item>
+       <item>缓解体力疲劳</item>
+       <item>提高缺氧耐受力</item>
+       <item>对辐射危害有辅助保护功能</item>
+       <item>减肥</item>
+       <item>改善生长发育</item>
+       <item>增加骨密度</item>
+       <item>改善缺铁性贫血</item>
+       <item>对化学性肝损伤有辅助保护功能</item>
+       <item>祛痤疮</item>
+       <item>祛黄褐斑</item>
+       <item>改善皮肤水份</item>
+       <item>改善皮肤油份</item>
+       <item>通便功能</item>
+       <item>对胃黏膜损伤有辅助保护功能</item>
+       <item>调节肠道菌群</item>
+       <item>促进消化</item>
+    </string-array>
+</resources>

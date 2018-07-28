@@ -12,8 +12,7 @@ data class Part(var title: String, var list: MutableList<Group>) {
         const val NOUSE = 2
     }
 }
-
-data class Group(var list_title: String, var group: MutableList<GroupChild>)
+data class Group(var list_title: String, var group: MutableList<GroupChild>, var group_all: MutableMap<String, MutableList<GroupChild>>)
 
 data class GroupChild(var group_name: String, var group_id: String, var required: String) {
     fun isRequired(): Boolean {

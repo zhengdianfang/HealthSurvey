@@ -129,7 +129,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
     abstract fun bindData2OptionsView(view: View, type: Int)
 
     open fun verify(): Boolean {
-        if (isRequried() && rootView.findViewById<View>(R.id.disableMaskView).visibility == View.GONE) {
+        if (isRequried() && rootView.visibility == View.GONE) {
             if (TextUtils.isEmpty(question.answers.answer)) {
                 Toast.makeText(context, context.getString(R.string.please_input_x_content, question.title), Toast.LENGTH_SHORT).show()
                 return false
@@ -156,11 +156,11 @@ abstract class BaseComponent(val context: Context, val question: Question) {
     }
 
     fun disable() {
-        rootView.findViewById<View>(R.id.disableMaskView).visibility = View.VISIBLE
+        rootView.visibility = View.GONE
     }
 
     fun enable() {
-        rootView.findViewById<View>(R.id.disableMaskView).visibility = View.GONE
+        rootView.visibility = View.VISIBLE
     }
 
     companion object {
@@ -180,6 +180,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
                 Question.AUTOCOMPLETE -> component = ProductNameElection(context, question)
                 Question.AUTO_FILL -> component = ProductCodeElection(context, question)
                 Question.COMPANY_ELECTION -> component = CompanyNameElection(context, question)
+                Question.FUNC_ELECTION -> component = FuncNameElection(context, question)
             }
             return component
         }

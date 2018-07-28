@@ -22,10 +22,7 @@ import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.*
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import com.zhengdianfang.healthsurvey.views.adapter.AttachmentAdapter
-import com.zhengdianfang.healthsurvey.views.components.BaseComponent
-import com.zhengdianfang.healthsurvey.views.components.CompanyNameElection
-import com.zhengdianfang.healthsurvey.views.components.ProductCodeElection
-import com.zhengdianfang.healthsurvey.views.components.ProductNameElection
+import com.zhengdianfang.healthsurvey.views.components.*
 import com.zhy.view.flowlayout.TagFlowLayout
 import kotlinx.android.synthetic.main.fragment_form_part_one.*
 import kotlinx.android.synthetic.main.tool_bar.*
@@ -122,10 +119,10 @@ open class FormPartOneFragment : BaseFragment() {
 
     protected fun fillProductCode(product: Product) {
         components.forEach { component ->
-            if (component.getQuestionType() == Question.AUTO_FILL) {
-                (component as ProductCodeElection).fill(product.code)
-            } else if (component.getQuestionType() == Question.COMPANY_ELECTION) {
-                (component as CompanyNameElection).fill(product.factory)
+            when {
+                component.getQuestionType() == Question.AUTO_FILL -> (component as ProductCodeElection).fill(product.code)
+                component.getQuestionType() == Question.COMPANY_ELECTION -> (component as CompanyNameElection).fill(product.factory)
+                component.getQuestionType() == Question.FUNC_ELECTION -> (component as FuncNameElection).fill(product.func, product.func27)
             }
         }
     }
@@ -144,7 +141,7 @@ open class FormPartOneFragment : BaseFragment() {
                     val view = component?.render()
                     renderQuestionCustomStyle(view)
                     if (question.type == Question.AUTOCOMPLETE.toString()) {
-                        (component as ProductNameElection).bindData2View({ product -> fillProductCode(product) })
+                        (component as ProductNameElection).bindData2View { product -> fillProductCode(product) }
                     } else {
                         component.bindData2View()
                     }
@@ -228,25 +225,25 @@ open class FormPartOneFragment : BaseFragment() {
             if (this.attachments.count() == MAX_ATTACHMENT_COUNT) {
                 toast(getString(R.string.max_upload_pic_count))
             } else {
-                selector("", listOf(getString(R.string.ablum), getString(R.string.camera)), { dialog, index ->
+                selector("", listOf(getString(R.string.ablum), getString(R.string.camera))) { dialog, index ->
                     if (index == 0) {
-                        requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), {
+                        requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                             startActivityForResult(Util.getIntentImageChooser(), Util.SELECT_PHOTO)
-                        })
+                        }
                     } else {
-                        requestPermission(arrayOf(Manifest.permission.CAMERA), {
+                        requestPermission(arrayOf(Manifest.permission.CAMERA)) {
                             takePhotoFilePath = Util.getTakePhotoFilePath(context!!).absolutePath
                             startActivityForResult(Util.getIntentCaptureCompat(context!!, File(takePhotoFilePath)), Util.OPEN_CAMERA)
-                        })
+                        }
                     }
-                })
+                }
             }
         }
         tagFlowLayout = attachmentView.findViewById(R.id.tagFlowLayout)
-        tagFlowLayout?.adapter = AttachmentAdapter(attachments, {pos ->
+        tagFlowLayout?.adapter = AttachmentAdapter(attachments) { pos ->
             attachments.removeAt(pos)
             tagFlowLayout?.adapter?.notifyDataChanged()
-        })
+        }
 
 
         return attachmentView

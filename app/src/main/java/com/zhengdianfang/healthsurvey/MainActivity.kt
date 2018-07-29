@@ -8,6 +8,8 @@ import android.text.TextUtils
 import android.util.Log
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.gson.reflect.TypeToken
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.crashreport.CrashReport
 import com.zhengdianfang.healthsurvey.datasource.cloud.WebService
 import com.zhengdianfang.healthsurvey.entities.Product
 import com.zhengdianfang.healthsurvey.entities.Question
@@ -45,10 +47,8 @@ class MainActivity : SupportActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val fragment = SupportFragment.instantiate(this, MainFragment::class.java.name) as ISupportFragment
         loadRootFragment(android.R.id.content, fragment)
-
 
         val productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
         requestProductList(productViewModel)

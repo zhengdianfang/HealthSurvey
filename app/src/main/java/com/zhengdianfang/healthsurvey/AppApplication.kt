@@ -2,6 +2,8 @@ package com.zhengdianfang.healthsurvey
 
 import android.app.Application
 import android.util.Log
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.crashreport.CrashReport
 import me.yokeyword.fragmentation.Fragmentation
 
 
@@ -21,6 +23,10 @@ class AppApplication: Application() {
                 .stackViewMode(Fragmentation.BUBBLE)
                 .debug(BuildConfig.DEBUG)
                 .install()
+
+        CrashReport.initCrashReport(this, "01ed834c99", true, null)
+        CrashReport.setAppChannel(this, "zdf")
+        CrashReport.setAppPackage(this, packageName)
 
     }
 

@@ -32,17 +32,17 @@ class MultiElection(context: Context, question: Question) : BaseComponent(contex
 
     private val alertDialog by lazy {
         val dialog = SingleElectionAlertDialog(context, android.R.style.Theme_Material_Light_Dialog_MinWidth)
-        dialog.setButton(Dialog.BUTTON_POSITIVE, context.resources.getString(R.string.confrim), { dialog, _ ->
+        dialog.setButton(Dialog.BUTTON_POSITIVE, context.resources.getString(R.string.confrim)) { dialog, _ ->
 
             val content = editText.text.toString()
             if (TextUtils.isEmpty(content).not()) {
                 val singleElectionAlertDialog = dialog as SingleElectionAlertDialog
                 setAnswer(true, singleElectionAlertDialog.radioIndex, singleElectionAlertDialog.type, editText.text.toString())
             }
-        })
-        dialog.setButton(Dialog.BUTTON_NEGATIVE, context.getString( R.string.cancel), { _, _ ->
+        }
+        dialog.setButton(Dialog.BUTTON_NEGATIVE, context.getString( R.string.cancel)) { _, _ ->
             dialog.dismiss()
-        })
+        }
         dialog.setTitle(context.resources.getString(R.string.please_input_other_reason))
         dialog.setView(editText)
         dialog.setOnDismissListener{
@@ -61,14 +61,19 @@ class MultiElection(context: Context, question: Question) : BaseComponent(contex
             val isChecked = lastCheckeds.contains(index.toString())
             if (isChecked) {
                 checkBox.isChecked = isChecked
-                this.onSelectOption?.invoke(question, option, isChecked)
+                if (type == FRONT_OPTIONS) {
+                    this.onSelectOption?.invoke(question, option, isChecked)
+                }
             }
             checkBox.setOnCheckedChangeListener { view, b ->
-                this.onSelectOption?.invoke(question, option, b)
+                val type = (view as AppCheckBox).type
+                if (type == FRONT_OPTIONS) {
+                    this.onSelectOption?.invoke(question, option, b)
+                }
                 if (option?.isMore()!! && b) {
-                    alertDialog.show(index, (view as AppCheckBox).type)
+                    alertDialog.show(index, type)
                 } else {
-                    setAnswer(b, index, (view as AppCheckBox).type)
+                    setAnswer(b, index, type)
                 }
             }
             linearLayout.addView(checkBox)

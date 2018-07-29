@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.Group
 import com.zhengdianfang.healthsurvey.entities.GroupChild
 import com.zhengdianfang.healthsurvey.entities.Part
@@ -138,13 +137,17 @@ class GroupListFragment : BaseFragment() {
     fun updateInUseGroupList(filterFuncStr: String = "") {
         this.groups.clear()
         part?.list?.forEach { group ->
-            group.group_all.forEach { key, list ->
-                if (key == "问卷表") {
-                    this.groups.add(Group(group.list_title, list, mutableMapOf()))
+            val tempGroupChilds = mutableListOf<GroupChild>()
+            group.group_all.forEach { entry ->
+                if (entry.key == "问卷表") {
+                    this.groups.add(Group(group.list_title, entry.value, mutableMapOf()))
                 }
-                if (!TextUtils.isEmpty(filterFuncStr) && filterFuncStr.contains(key)){
-                    this.groups.add(Group(group.list_title, list, mutableMapOf()))
+                if (!TextUtils.isEmpty(filterFuncStr) && filterFuncStr.contains(entry.key)){
+                    tempGroupChilds.addAll(entry.value)
                 }
+            }
+            if (tempGroupChilds.isNotEmpty()) {
+                this.groups.add(Group(group.list_title, tempGroupChilds, mutableMapOf()))
             }
         }
         adapter.notifyDataSetChanged()

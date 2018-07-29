@@ -252,7 +252,7 @@ open class FormPartOneFragment : BaseFragment() {
     protected open fun onSelectOption(question: Question, option: Option, isChecked: Boolean) {
         omits[question.qid] = option.omit
         (activity as MainActivity).addAdvice(question, option.advise, isChecked)
-        val split = omits.values.reduce { acc, s -> acc.plus(s).plus(",") }.split(",")
+        val split = omits.values.reduce { acc, s -> acc.plus(",").plus(s) }.split(",")
         components.forEach { component ->
             if (split.contains(component.question.qid)) {
                 component.disable()

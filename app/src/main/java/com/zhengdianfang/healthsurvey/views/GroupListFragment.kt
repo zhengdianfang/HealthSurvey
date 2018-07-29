@@ -140,7 +140,7 @@ class GroupListFragment : BaseFragment() {
             val tempGroupChilds = mutableListOf<GroupChild>()
             group.group_all.forEach { entry ->
                 if (entry.key == "问卷表") {
-                    this.groups.add(Group(group.list_title, entry.value, mutableMapOf()))
+                    this.groups.add(Group("", entry.value, mutableMapOf()))
                 }
                 if (!TextUtils.isEmpty(filterFuncStr) && filterFuncStr.contains(entry.key)){
                     tempGroupChilds.addAll(entry.value)

@@ -1,0 +1,66 @@
+{
+  "id": "999999",
+  "subdata": [
+    {
+      "answers": {
+        "answer": ""
+      },
+      "code": "",
+      "isComparisonBeforeEat": "0",
+      "options": [],
+      "pic": "",
+      "qid": "990",
+      "title": "您服用的保健品的名称：",
+      "type": "4"
+    },
+    {
+      "answers": {
+        "answer": ""
+      },
+      "code": "1",
+      "ext": {
+        "checkType": "0",
+        "required": "0",
+        "unit": "",
+        "weight": "1"
+      },
+      "pic": "",
+      "qid": "991",
+      "title": "批准文号：",
+      "type": "5"
+    },
+    {
+      "answers": {
+        "answer": ""
+      },
+      "code": "B11",
+      "ext": {
+        "checkType": "1",
+        "required": "0",
+        "unit": "",
+        "weight": "1"
+      },
+      "isComparisonBeforeEat": "0",
+      "qid": "992",
+      "title": "生产厂家：",
+      "type": "3"
+    },
+    {
+      "answers": {
+        "answer": ""
+      },
+      "code": "B_V2_GX",
+      "ext": {
+        "checkType": "1",
+        "required": "0",
+        "unit": "",
+        "weight": "1"
+      },
+      "isComparisonBeforeEat": "0",
+      "qid": "993",
+      "title": "保健功能：",
+      "type": "3"
+    }
+  ],
+  "title": ""
+}

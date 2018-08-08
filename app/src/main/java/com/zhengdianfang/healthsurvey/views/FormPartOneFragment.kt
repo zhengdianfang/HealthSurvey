@@ -14,10 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.MainActivity
 import com.zhengdianfang.healthsurvey.R
-import com.zhengdianfang.healthsurvey.R.id.titleTextView
 import com.zhengdianfang.healthsurvey.Util
 import com.zhengdianfang.healthsurvey.entities.*
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
@@ -30,6 +28,7 @@ import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
+import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.selector
 import org.jetbrains.anko.support.v4.toast
 import top.zibin.luban.Luban
@@ -52,6 +51,7 @@ open class FormPartOneFragment : BaseFragment() {
     private var takePhotoFilePath: String = ""
     protected val attachments = mutableListOf<String>()
     private var tagFlowLayout: TagFlowLayout? = null
+    private val formViewGroup by lazy { find<ViewGroup>(R.id.formViewGroup) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -145,13 +145,13 @@ open class FormPartOneFragment : BaseFragment() {
                     } else {
                         component.bindData2View()
                     }
-                    formViewGroup.addView(view)
+                    this.formViewGroup.addView(view)
 
                 }
             }
             if (form.attachment == Form.HAVE_ATTACHMENT.toString()) {
 
-                formViewGroup.addView(renderAttachment())
+                this.formViewGroup.addView(renderAttachment())
             }
         }
     }

@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData
 import com.zhengdianfang.healthsurvey.AppApplication
 import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.Header
+import com.zhengdianfang.healthsurvey.entities.NotSafitis
 import com.zhengdianfang.healthsurvey.entities.Request
 import com.zhengdianfang.healthsurvey.repository.AppRepository
 import java.io.File
@@ -48,6 +49,10 @@ class FormViewModel(application: Application) : AndroidViewModel(application) {
 
     fun uploadPic(file: File): LiveData<String> {
        return appRepository.uploadPic(file)
+    }
+
+    fun postNotSatisfiedData(uniqueid: String, notSafitis: NotSafitis, org_number: String = ""): LiveData<Any> {
+        return appRepository.postNotSatisfiedData(Request(Header("", uniqueid,  org_number), notSafitis))
     }
 
     fun uploadDeviceInfo(uniqueid: String) {

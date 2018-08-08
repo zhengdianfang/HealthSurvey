@@ -294,4 +294,26 @@ class AppRepository {
                 })
     }
 
+    fun postNotSatisfiedData(request: Request): LiveData<Any> {
+
+        val data = MutableLiveData<Any>()
+        WebService.retrofit
+                .create(WebService.Api::class.java)
+                .surveyFinish(WebService.gson.toJson(request))
+                .enqueue(object : Callback<Response<Any>> {
+                    override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
+                        t?.printStackTrace()
+                        data.value = null
+                    }
+
+                    override fun onResponse(call: Call<Response<Any>>?, response: retrofit2.Response<Response<Any>>?) {
+                        Log.d("AppRepository", response?.message())
+                        val body = response?.body()
+                        data.value = body?.data
+                    }
+
+                })
+        return data
+    }
+
 }

@@ -4,7 +4,6 @@ package com.zhengdianfang.healthsurvey.views
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -23,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_no_use.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
-import org.jetbrains.anko.support.v4.selector
 
 
 /**
@@ -37,8 +35,8 @@ class NoUseFragment : BaseFragment() {
     private val uniqueid by lazy { arguments?.getString("uniqueid") ?: "" }
     private val notSatisfiedAlertDialog by lazy {
         val dialog= NotSatisfiedAlertDialog(context, android.R.style.Theme_Material_Light_Dialog_MinWidth)
-        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), {dialogInterface, _ -> dialogInterface.dismiss() })
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confrim), {dialogInterface, _ ->
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel)) { dialogInterface, _ -> dialogInterface.dismiss() }
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confrim)) { dialogInterface, _ ->
             val radioCheckedIndex = (dialogInterface as NotSatisfiedAlertDialog).getRadioCheckedIndex()
             when (radioCheckedIndex) {
                 0 -> formViewModel.trachDirection(uniqueid, org_number, "2.2.1 停止使用-->对产品不满意-->价格不合理")
@@ -49,8 +47,8 @@ class NoUseFragment : BaseFragment() {
             }
             start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
             dialogInterface.dismiss()
-        })
-       dialog
+        }
+        dialog
     }
 
     private val editText by lazy {
@@ -64,8 +62,8 @@ class NoUseFragment : BaseFragment() {
 
     private val alertDialog by lazy {
         AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_MinWidth)
-                .setPositiveButton(R.string.confrim, { _, _ ->
-                      val content = editText.text.toString()
+                .setPositiveButton(R.string.confrim) { _, _ ->
+                    val content = editText.text.toString()
                     if (TextUtils.isEmpty(content).not()) {
                         showDialog()
                         formViewModel.trachDirection(uniqueid, org_number, "2.4 其他-->$content").observe(this, Observer {
@@ -73,7 +71,7 @@ class NoUseFragment : BaseFragment() {
                             start(SupportFragment.instantiate(context, FinishFragment::class.java.name) as ISupportFragment)
                         })
                     }
-                })
+                }
                 .setTitle(getString(R.string.please_input_other_reason))
                 .setView(editText)
                 .create()
@@ -93,7 +91,7 @@ class NoUseFragment : BaseFragment() {
             this.index = groupView.indexOfChild(groupView.findViewById<RadioButton>(checkId))
             when(this.index) {
                 1 -> {
-                    notSatisfiedAlertDialog.show()
+                    start(SupportFragment.instantiate(context, NotSatisfiedFragment::class.java.name) as ISupportFragment)
                 }
                 3 -> {
                     alertDialog.show()

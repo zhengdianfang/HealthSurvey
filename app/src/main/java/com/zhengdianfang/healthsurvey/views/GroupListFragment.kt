@@ -86,7 +86,7 @@ class GroupListFragment : BaseFragment() {
             if (checkFill()){
                 when(partType) {
                     Part.BASE -> {
-                        start(SupportFragment.instantiate(context, FormAskFragment::class.java.name, arguments) as ISupportFragment)
+                        startWithPop(SupportFragment.instantiate(context, FormAskFragment::class.java.name, arguments) as ISupportFragment)
                     }
                     Part.INUSE -> {
                         goOnDialog.show()
@@ -138,7 +138,7 @@ class GroupListFragment : BaseFragment() {
         this.groups.clear()
         part?.list?.forEach { group ->
             val tempGroupChilds = mutableListOf<GroupChild>()
-            group.group_all.forEach { entry ->
+            group.group_all?.forEach { entry ->
                 if (entry.key == "问卷表") {
                     this.groups.add(Group("", entry.value, mutableMapOf()))
                 }

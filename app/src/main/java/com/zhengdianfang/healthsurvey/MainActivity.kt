@@ -30,6 +30,8 @@ import retrofit2.Callback
 
 class MainActivity : SupportActivity(), AnkoLogger {
 
+    private var isResumeFinish = false
+
     val products by lazy {
         var list = mutableListOf<Product>()
         val json = defaultSharedPreferences.getString(PRODUCT_SAVE_KEY, "")
@@ -54,6 +56,12 @@ class MainActivity : SupportActivity(), AnkoLogger {
         requestProductList(productViewModel)
 
         checkUpdate()
+    }
+
+
+    override fun onPostResume() {
+        super.onPostResume()
+        this.isResumeFinish = true
     }
 
     fun addAdvice(question: Question, adviceStr: String, isChecked: Boolean) {
@@ -106,13 +114,13 @@ class MainActivity : SupportActivity(), AnkoLogger {
 
 
     private fun alertUpdateDialog(version: Version?) {
-        if (version != null) {
+        if (version != null && this.isResumeFinish) {
             if (version.newversion > packageManager.getPackageInfo(packageName, 0).versionName) {
                 val alertDialog = AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_MinWidth)
-                        .setPositiveButton(getString(R.string.upgradel), { _, _ ->
+                        .setPositiveButton(getString(R.string.upgradel)) { _, _ ->
                             browse(version?.android_url)
                             System.exit(-1)
-                        })
+                        }
                         .setMessage(version?.updateInfos)
                         .create()
 

@@ -15,6 +15,7 @@ import com.zhengdianfang.healthsurvey.MainActivity
 import com.zhengdianfang.healthsurvey.R
 import com.zhengdianfang.healthsurvey.entities.Question
 import com.zhengdianfang.healthsurvey.views.GroupListFragment
+import com.zhengdianfang.healthsurvey.views.NotSatisfiedFragment
 
 
 class FuncNameElection(context: Context, question: Question) : BaseComponent(context, question) {
@@ -51,7 +52,10 @@ class FuncNameElection(context: Context, question: Question) : BaseComponent(con
         question.answers?.answer = func27
         if (context is MainActivity) {
             val groupListFragment = context.findFragment(GroupListFragment::class.java)
-            groupListFragment?.updateInUseGroupList(func27)
+            val notSatisfiedFragment = context.findFragment(NotSatisfiedFragment::class.java)
+            if (null == notSatisfiedFragment) {
+                groupListFragment?.updateInUseGroupList(func27)
+            }
         }
     }
 

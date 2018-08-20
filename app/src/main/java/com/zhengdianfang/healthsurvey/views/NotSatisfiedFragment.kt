@@ -12,6 +12,7 @@ import com.zhengdianfang.healthsurvey.entities.Form
 import com.zhengdianfang.healthsurvey.entities.NotSafitis
 import com.zhengdianfang.healthsurvey.viewmodel.FormViewModel
 import kotlinx.android.synthetic.main.fragment_not_satisfied.*
+import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import java.io.InputStreamReader
@@ -31,6 +32,7 @@ class NotSatisfiedFragment : FormPartOneFragment() {
         super.onActivityCreated(savedInstanceState)
         val inputStreamReader = InputStreamReader(resources.openRawResource(R.raw.custom_question_list))
         val text = inputStreamReader.readText()
+        back.setOnClickListener { pop() }
         initViews(Gson().fromJson(text, Form::class.java))
     }
 

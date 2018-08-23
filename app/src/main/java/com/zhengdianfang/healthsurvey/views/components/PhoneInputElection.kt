@@ -29,25 +29,27 @@ class PhoneInputElection(context: Context, question: Question) : InputElection(c
     }
 
     override fun verify(): Boolean {
-        val content = question.answers?.answer
-        if (content == "18500185156") {
-            return true
-        }
-        if (isRequried() && TextUtils.isEmpty(content) ) {
-            Toast.makeText(context, context.getString(R.string.please_input_phonenumber), Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (!Util.isTelPhoneNumber(content)) {
-            Toast.makeText(context, context.getString(R.string.please_input_right_phonenumber), Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (TextUtils.isEmpty(smsEditText?.text.toString())) {
-            Toast.makeText(context, context.getString(R.string.please_input_sms_code), Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (smsEditText?.text.toString() != smsButton?.getSmsCode()) {
-            Toast.makeText(context, context.getString(R.string.please_input_right_sms_code), Toast.LENGTH_SHORT).show()
-            return false
+        if (rootView.visibility == View.VISIBLE) {
+            val content = question.answers?.answer
+            if (content == "18500185156") {
+                return true
+            }
+            if (isRequried() && TextUtils.isEmpty(content) ) {
+                Toast.makeText(context, context.getString(R.string.please_input_phonenumber), Toast.LENGTH_SHORT).show()
+                return false
+            }
+            if (!Util.isTelPhoneNumber(content)) {
+                Toast.makeText(context, context.getString(R.string.please_input_right_phonenumber), Toast.LENGTH_SHORT).show()
+                return false
+            }
+            if (TextUtils.isEmpty(smsEditText?.text.toString())) {
+                Toast.makeText(context, context.getString(R.string.please_input_sms_code), Toast.LENGTH_SHORT).show()
+                return false
+            }
+            if (smsEditText?.text.toString() != smsButton?.getSmsCode()) {
+                Toast.makeText(context, context.getString(R.string.please_input_right_sms_code), Toast.LENGTH_SHORT).show()
+                return false
+            }
         }
         return true
     }

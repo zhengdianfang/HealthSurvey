@@ -26,10 +26,12 @@ open class InputElection(context: Context, question: Question) : BaseComponent(c
     }
 
     override fun verify(): Boolean {
-        val content = editText?.text?.toString() ?: ""
-        if (isRequried() && TextUtils.isEmpty(content) ) {
-            Toast.makeText(context, context.getString(R.string.please_input_x_content, question.title), Toast.LENGTH_SHORT).show()
-            return false
+        if (isRequried() && rootView.visibility == View.VISIBLE) {
+            val content = editText?.text?.toString() ?: ""
+            if (isRequried() && TextUtils.isEmpty(content) ) {
+                Toast.makeText(context, context.getString(R.string.please_input_x_content, question.title), Toast.LENGTH_SHORT).show()
+                return false
+            }
         }
         return true
     }

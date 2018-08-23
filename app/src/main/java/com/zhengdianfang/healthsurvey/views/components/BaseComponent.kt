@@ -111,7 +111,6 @@ abstract class BaseComponent(val context: Context, val question: Question) {
             endQuestionContentView.removeAllViews()
             endQuestionContentView.addView(renderOptions(END_OPTIONS))
         }
-        rootView.isEnabled = false
         return rootView
     }
 
@@ -129,7 +128,7 @@ abstract class BaseComponent(val context: Context, val question: Question) {
     abstract fun bindData2OptionsView(view: View, type: Int)
 
     open fun verify(): Boolean {
-        if (isRequried() && rootView.visibility != View.GONE) {
+        if (isRequried() && rootView.visibility == View.VISIBLE) {
             if (TextUtils.isEmpty(question.answers.answer)) {
                 Toast.makeText(context, context.getString(R.string.please_input_x_content, question.title), Toast.LENGTH_SHORT).show()
                 return false

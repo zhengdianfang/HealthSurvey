@@ -135,22 +135,24 @@ class GroupListFragment : BaseFragment() {
     }
 
     fun updateInUseGroupList(filterFuncStr: String = "") {
-        this.groups.clear()
-        part?.list?.forEach { group ->
-            val tempGroupChilds = mutableListOf<GroupChild>()
-            group.group_all?.forEach { entry ->
-                if (entry.key == "问卷表") {
-                    this.groups.add(Group("", entry.value, mutableMapOf()))
+        if (partType == Part.INUSE) {
+            this.groups.clear()
+            part?.list?.forEach { group ->
+                val tempGroupChilds = mutableListOf<GroupChild>()
+                group.group_all?.forEach { entry ->
+                    if (entry.key == "问卷表") {
+                        this.groups.add(Group("", entry.value, mutableMapOf()))
+                    }
+                    if (!TextUtils.isEmpty(filterFuncStr) && filterFuncStr.contains(entry.key)){
+                        tempGroupChilds.addAll(entry.value)
+                    }
                 }
-                if (!TextUtils.isEmpty(filterFuncStr) && filterFuncStr.contains(entry.key)){
-                    tempGroupChilds.addAll(entry.value)
+                if (tempGroupChilds.isNotEmpty()) {
+                    this.groups.add(Group(group.list_title, tempGroupChilds, mutableMapOf()))
                 }
             }
-            if (tempGroupChilds.isNotEmpty()) {
-                this.groups.add(Group(group.list_title, tempGroupChilds, mutableMapOf()))
-            }
+            adapter.notifyDataSetChanged()
         }
-        adapter.notifyDataSetChanged()
     }
 
     override fun onSupportVisible() {

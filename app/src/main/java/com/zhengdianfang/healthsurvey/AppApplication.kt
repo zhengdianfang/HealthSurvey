@@ -51,6 +51,7 @@ class AppApplication: Application() {
         } else {
             "${split.first()}_${split.last().toInt() + 1}"
         }
+        Log.d("gloalUnquieId", gloalUnquieId + "")
         return gloalUnquieId
     }
     fun resetUnquieId() {

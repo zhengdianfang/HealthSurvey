@@ -22,7 +22,7 @@
             android:textSize="18sp"
             android:textColor="@android:color/black"
             android:padding="8dp"
-            android:text="请选择停止该保健品的理由"
+            android:text="请选择停止该保健食品的理由"
             android:background="@drawable/top_corner_background"/>
 
         <RadioGroup
@@ -35,7 +35,7 @@
            <RadioButton
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:text="出现不良反应"
+               android:text="出现身体不适"
                android:layout_marginHorizontal="8dp"
                android:textColor="@android:color/darker_gray"
                android:padding="16dp"/>

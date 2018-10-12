@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_group_list.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
+import org.jetbrains.anko.defaultSharedPreferences
 
 
 /**
@@ -44,7 +45,9 @@ class GroupListFragment : BaseFragment() {
                 .setPositiveButton(getString(R.string.goon_reply)) { _, _ ->
                     arguments?.putBoolean("increase", true)
                     unquieIdIncrease()
-                    start(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
+                    context?.defaultSharedPreferences?.edit()?.clear()?.apply()
+                    (context?.applicationContext as AppApplication).surveyStatusCache.clear()
+                    startWithPop(SupportFragment.instantiate(context, GroupListFragment::class.java.name, arguments) as ISupportFragment)
                 }
                 .setNegativeButton(getString(R.string.finish)) { _, _ ->
                     resetUnquieId()
@@ -81,7 +84,9 @@ class GroupListFragment : BaseFragment() {
     }
 
     private fun initEvents() {
-        back.setOnClickListener { pop() }
+        back.setOnClickListener {
+            pop()
+        }
         nextbutton.getChildAt(0).setOnClickListener {
             if (checkFill()){
                 when(partType) {

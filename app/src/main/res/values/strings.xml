@@ -4,12 +4,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="question_title">保健食品调查问卷</string>
-    <string name="personal_ask_use_label">您是否使用过保健品?</string>
+    <string name="personal_ask_use_label">您是否使用过保健食品?</string>
     <string name="personal_ask_use_label1">过去三个月里，您是否食用过保健食品?</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="back_label">返回</string>
-    <string name="not_requirement_content">由于您未使用任何保健品，暂不能参加本次问卷活动。</string>
+    <string name="not_requirement_content">由于您未使用任何保健食品，暂不能参加本次问卷活动。</string>
     <string name="next_step">下一步</string>
     <string name="get_sms_code">获取验证码</string>
     <string name="add_attachment">请添加附件：</string>
@@ -42,7 +42,7 @@
     <string name="nouse_title">停用原因</string>
     <string name="goon_reply">继续回答</string>
     <string name="finish">结束</string>
-    <string name="goon_dailog_content">是否继续回答其他保健品</string>
+    <string name="goon_dailog_content">是否继续回答其他保健食品</string>
     <string name="fill">已填写</string>
     <string name="please_input_other_reason">请输入</string>
     <string name="back_home">返回首页</string>

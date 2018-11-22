@@ -299,7 +299,7 @@ class AppRepository {
         val data = MutableLiveData<Any>()
         WebService.retrofit
                 .create(WebService.Api::class.java)
-                .surveyFinish(WebService.gson.toJson(request))
+                .postNotSatisfiedData(WebService.gson.toJson(request))
                 .enqueue(object : Callback<Response<Any>> {
                     override fun onFailure(call: Call<Response<Any>>?, t: Throwable?) {
                         t?.printStackTrace()

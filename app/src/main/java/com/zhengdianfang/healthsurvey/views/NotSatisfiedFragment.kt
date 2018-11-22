@@ -42,6 +42,7 @@ class NotSatisfiedFragment : FormPartOneFragment() {
     override fun initEvents() {
         confirmButton.setOnClickListener {
             val notSafitis = NotSafitis(
+                    this.org_number,
                     components[0].question.answers.answer,
                     components[1].question.answers.answer,
                     components[2].question.answers.answer,

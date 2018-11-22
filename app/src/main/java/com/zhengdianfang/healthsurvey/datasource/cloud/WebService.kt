@@ -92,5 +92,9 @@ class WebService {
         @FormUrlEncoded
         @POST("api/report_info")
         fun uploadDeviceInfo(@Field("data") request: String): Call<Response<Any>>
+
+        @FormUrlEncoded
+        @POST("api/product_nouse")
+        fun postNotSatisfiedData(@Field("data") request: String): Call<Response<Any>>
     }
 }

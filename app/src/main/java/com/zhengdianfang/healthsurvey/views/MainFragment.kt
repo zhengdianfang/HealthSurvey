@@ -4,10 +4,12 @@ package com.zhengdianfang.healthsurvey.views
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.EventLogTags
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zhengdianfang.healthsurvey.R
+import com.zhengdianfang.healthsurvey.entities.Description
 import com.zhengdianfang.healthsurvey.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import me.yokeyword.fragmentation.ISupportFragment
@@ -19,6 +21,7 @@ import me.yokeyword.fragmentation.ISupportFragment
 class MainFragment : BaseFragment() {
 
 
+    var prizeUrlOnFinished = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -36,8 +39,9 @@ class MainFragment : BaseFragment() {
 
     private fun initData() {
         val productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
-        productViewModel.descriptionLiveData.observe(this, Observer<String> {
-            contentTextView.text = it
+        productViewModel.descriptionLiveData.observe(this, Observer<Description> {
+            contentTextView.text = it?.desc
+            this.prizeUrlOnFinished = it?.url ?: ""
         })
     }
 

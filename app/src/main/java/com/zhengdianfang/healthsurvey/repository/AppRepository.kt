@@ -40,8 +40,8 @@ class AppRepository {
         return data
     }
 
-    fun getDescription(): LiveData<String> {
-        val data = MutableLiveData<String>()
+    fun getDescription(): LiveData<Description> {
+        val data = MutableLiveData<Description>()
         WebService.retrofit
                 .create(WebService.Api::class.java)
                 .getHomeDescription()
@@ -56,7 +56,7 @@ class AppRepository {
                         val body = response?.body()
                         Log.d("AppRepository", body?.data.toString())
                         if (body?.status == WebService.HTTP_OK) {
-                            data.value = body.data?.desc ?: ""
+                            data.value = body.data
                         }
                     }
                 })

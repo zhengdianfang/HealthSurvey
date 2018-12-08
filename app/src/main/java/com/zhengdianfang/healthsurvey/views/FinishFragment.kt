@@ -1,8 +1,10 @@
 package com.zhengdianfang.healthsurvey.views
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +36,24 @@ class FinishFragment : BaseFragment() {
 
         titleTextView.setText(R.string.question_title)
         back.setOnClickListener {
-            popTo(FormStartFragment::class.java, false)
+            popTo(MainFragment::class.java, false)
+        }
+
+        val fragment = findFragment(MainFragment::class.java)
+        if (null != fragment) {
+            if (TextUtils.isEmpty(fragment.prizeUrlOnFinished)) {
+                prizeButton.visibility = View.GONE
+                spaceView.visibility = View.GONE
+            } else {
+                prizeButton.visibility = View.VISIBLE
+                spaceView.visibility = View.VISIBLE
+                prizeButton.setOnClickListener {
+                    startActivity(Intent(activity, WebActivity::class.java)
+                        .putExtra("url", fragment.prizeUrlOnFinished)
+                        .putExtra("copy", true)
+                    )
+                }
+            }
         }
     }
 

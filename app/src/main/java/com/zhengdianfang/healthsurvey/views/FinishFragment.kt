@@ -31,7 +31,7 @@ class FinishFragment : BaseFragment() {
 
         context?.defaultSharedPreferences?.edit()?.clear()?.apply()
         goHomeButton.setOnClickListener {
-            popTo(FormStartFragment::class.java, false)
+            popTo(MainFragment::class.java, false)
         }
 
         titleTextView.setText(R.string.question_title)

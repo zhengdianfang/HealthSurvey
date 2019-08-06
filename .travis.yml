@@ -1,5 +1,7 @@
 language: android
 dist: trusty
 android:
-  components:
-    - android-26
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+
